@@ -1,9 +1,8 @@
 <?php
 require_once(dirname(__FILE__)."/config.php");
-$loginStat =1;
 if( isset($_FILES['picture']) && !empty($_FILES['picture']['name']) )
 {
-	if( !$loginStat )
+	if( !$admin )
 	{		 
 		jsmsg(1,'not login');
 	}
