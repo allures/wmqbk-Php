@@ -107,7 +107,7 @@ function delpl(id,pid){
      }
 }
 function shpl(id){
-		$.get("./app/class/api.php?act=shpl&pid="+id,function(data){if(data.result=='200'){$("#sh-"+id).fadeOut();}else{alert(data.message);}},'json');
+		$.get("./app/class/api.php?act=shpl&id="+id,function(data){if(data.result=='200'){$("#sh-"+id).fadeOut();}else{alert(data.message);}},'json');
 }
 function zdlog(id){
 	var zdobj=$("#zd-"+id);

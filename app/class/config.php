@@ -7,6 +7,7 @@ define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
 define('COSUP',0);
 define('ImgW',180);
+define('ImgH',120);
 $admin = $_SESSION['admin'] == 1?1:0;
 $set = getset();
 function mkDirs($path)
@@ -44,8 +45,10 @@ function jsmsg($n,$m){
    $arr['data'] = $m;
    echo json_encode($arr);
 }
-function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200)
+function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=false)
 {
+	$_n_w = $maxWidth;
+	$_n_h = $maxHeight;
 	if( $maxWidth > $imgInfo[0] || $maxHeight > $imgInfo[1] )
 	{
 		$maxWidth = $imgInfo[0];
@@ -60,8 +63,30 @@ function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200)
 			$maxHeight = ($maxWidth / $imgInfo[0]) * $imgInfo[1];
 	}
 
-	$image_p = imagecreatetruecolor($maxWidth, $maxHeight);
+	$cw = 0;
+	  $ch = 0;
+	if($cut){
 
+
+  if ($maxWidth < $_n_w) { //如果新高度小于新容器高度
+   $r = $_n_w / $maxWidth; //按长度求出等比例因子
+   $maxWidth *= $r; //扩展填充后的长度
+   $maxHeight *= $r; //扩展填充后的高度
+   $ch = ($maxHeight - $_n_h) / 2; //求出裁剪点的高度
+  }
+  
+  if ($maxHeight < $_n_h) { //如果新高度小于容器高度
+   $r = $_n_h / $maxHeight; //按高度求出等比例因子
+   $maxWidth *= $r; //扩展填充后的长度
+   $maxHeight *= $r; //扩展填充后的高度
+   $cw = ($maxWidth - $_n_w) / 2; //求出裁剪点的长度
+  }	
+  $image_p = imagecreatetruecolor($_n_w, $_n_h);	 
+	} else{
+	  $image_p = imagecreatetruecolor($maxWidth, $maxHeight);	 
+	}
+
+    
 	switch($imgInfo[2])
 	{
 		case 1:
@@ -75,7 +100,7 @@ function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200)
 		break;
 	}
 
-	imagecopyresampled($image_p, $image, 0, 0, 0, 0, $maxWidth, $maxHeight, $imgInfo[0], $imgInfo[1]);
+	imagecopyresampled($image_p, $image, 0, 0, $cw , $ch , $maxWidth, $maxHeight, $imgInfo[0], $imgInfo[1]);
 
 	imagejpeg($image_p, $newImg,100);
 

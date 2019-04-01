@@ -125,7 +125,7 @@ if($c=='savelog'){
 	   $Image = ROOT_PATH.$arr['pic'];
 	   $imgInfo = @getimagesize($Image);
        $saveImage = str_replace('/b_','/s_',$Image);
-	   createImg($Image,$saveImage,$imgInfo,ImgW,ImgW);
+	   createImg($Image,$saveImage,$imgInfo,ImgW,ImgH,1);
        $arr['pic'] = str_replace(ROOT_PATH,'',$saveImage);
 		   }
 	   }
