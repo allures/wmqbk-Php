@@ -46,6 +46,7 @@ $db =new DbHelpClass();
  }
 
 if($c == 'plsave'){
+	chkadm();
 	$arr['id'] = $id;
 	$arr['rcontent'] = $_POST['rlog'];
 	$b =  $db->runsql("update `Pl` set rcontent=:rcontent where id=:id",$arr);

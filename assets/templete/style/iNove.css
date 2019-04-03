@@ -1,4 +1,4 @@
-/*∑Á∏ÒÃ·»°◊‘wpµƒiNove∑Á∏Ò*/
+Ôªø/*È£éÊ†ºÊèêÂèñËá™wpÁöÑiNoveÈ£éÊ†º*/
 *{padding:0;margin:0;}
 html{box-sizing: border-box;}
 body{background:#BEC3C6 url(bg.jpg) repeat-x;color:#555;font: 14px "Microsoft YaHei",Arial,sans-serif;}
@@ -6,11 +6,11 @@ img{border:none;}
 li{list-style: outside none none;margin: 0;padding: 0;}
 input,textarea{-webkit-appearance:none;outline:none;}
 .add{margin-bottom:10px;clear:both;}
-.log{border:1px #ccc solid;height:17px;padding:4px;}
+.log{border:1px #ccc solid;height:25px;padding:4px;font-family: inherit;box-sizing: border-box;}
 .relog{width:80%;font-size:14px;padding:2px;}
 #pname{margin-bottom:5px;*margin-bottom:0px;}
 input.search,input.pass{height:17px;border:1px #ccc solid;padding:2px;}
-textarea.addlog{width:99%;font-size:14px;height:auto;padding:0}
+textarea.addlog{width:99%;font-size:14px;height:auto;}
 textarea#plog{width:85%;font-size:14px;height:auto;}
 input:focus {border: 1px solid #37b8eb;}
 textarea:focus {border: 1px solid #37b8eb;}
@@ -45,7 +45,7 @@ a:hover{text-decoration:underline;}
 .comlist{clear:both;border-bottom:1px #B4B4B4 dotted;margin-bottom:5px;overflow:hidden}
 #comment_list h4{border-bottom: 1px dotted #ccc;font-size:14px;margin-bottom:5px;}
 #content p{line-height:24px;}
-/*≤‡±ﬂ¿∏*/
+/*‰æßËæπÊ†è*/
 @media screen and (max-width:936px) {
    #content{background:#fff;}
    #sidebar,#other,.info{display:none;}
@@ -65,7 +65,7 @@ a:hover{text-decoration:underline;}
 .comment li,.topic li{border-bottom: 1px dotted #B4B4B4; line-height:24px;}
 .comment li:last-child,.topic li:last-child{border-bottom:none}
 
-/*∑÷“≥*/
+/*ÂàÜÈ°µ*/
 #pager{margin:10px 0;text-align:right; clear:both;font-size:12px;}
 #pager a{margin-right:5px;padding:3px 6px;text-decoration:none;border:1px solid #EDEFF0;}
 #pager a:hover{background:#F7F7F7;border:1px solid #CCC;}
@@ -73,15 +73,6 @@ a:hover{text-decoration:underline;}
 #pager .current{background-color: #27a9e3;border: 1px solid #27a9e3;color: #fff;}
 #footer{background:#eeeeee;height:30px;margin-bottom:30px;border-top:1px solid #CCC;font-size:12px;line-height:145%;max-width:916px;padding:10px;clear:both; padding-top:20px}
 #footer a{color:#2A2A2A;}
-/*ubb*/
-.ico_addtopic {width:10px; height:10px; margin:0 3px -1px 0; background:url(icon.gif) no-repeat 0 -2px;}
-.ico_addlink {width:15px; height:8px; margin:0 3px 1px 0; background:url(icon.gif) no-repeat 0 -15px;overflow:hidden;}
-.ico_addvideo {width:14px; height:9px; margin:0 3px 0 0; background:url(icon.gif) no-repeat 0 -26px;overflow:hidden;}
-.ico_addmusic {width:12px; height:10px; margin:0 3px 0 0;background:url(icon.gif) no-repeat 0 -52px;overflow:hidden;}
-.ico_addimg {width:14px; height:13px; margin:0 3px -2px 0;background:url(icon.gif) no-repeat 0 -37px;overflow:hidden;}
-.ico_addpass {width:13px; height:12px; margin:0 3px -1px 0;background:url(icon.gif) no-repeat 0 -64px;overflow:hidden;}
-.ico_addbold {width:11px; height:11px; margin:0 3px -1px 0;background:url(icon.gif) no-repeat 0 -79px;overflow:hidden;}
-
 .tabtitle {
     background: #f4f4f4;
     /*border-bottom: 1px solid #ddd;*/
