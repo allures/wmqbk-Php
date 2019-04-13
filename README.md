@@ -19,3 +19,10 @@
 1. 下载 https://gitee.com/daimaguo/wmphp/blob/master/qblog.zip
 2. 解压
 3. 使用
+
+#### 官网及演示
+
+官方网站：https://www.4jax.net/log
+演示网站：http://demo.semlog.cn/
+
+欢迎体验使用提交BUG及建议。
