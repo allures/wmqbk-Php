@@ -1,0 +1,1 @@
+<?php if(!defined('wmblog'))exit; ?>自豪的采用：<a href="http://www.4jax.net">无名轻博客</a> 模板：<?php echo $template;?>  Processed in <?php $t2 = microtime(true); echo round($t2-$t1,3); ?>s <a href="http://www.miitbeian.gov.cn/" rel="nofollow" target="_blank"><?php echo $icp;?></a>

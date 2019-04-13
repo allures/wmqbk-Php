@@ -4,18 +4,20 @@ $c = isset($_GET['act'])?$_GET['act']:'';
 $d = isset($_GET['d'])?$_GET['d']:'';
 $p = isset($_GET['p'])?intval($_GET['p']):1;
 $id = isset($_REQUEST['id'])?intval($_REQUEST['id']):0;
-$db =new DbHelpClass(); 
+$db = new DbHelpClass();
 
- if($c == 'dellog'){
-	 chkadm();  
+switch ($c) {
+
+case 'dellog':
+	 chkadm();
 	 $b =  $db->runsql("delete from `Log` where id=:id",array("id"=>$id));
      $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));
 	 logmsg($b);
-}
+break;
 
- if($c == 'addpl'){	 
-	 $code = $_POST['scode'];
+case 'addpl': 	 
 	 if($set['safecode'] ==1){
+	   $code = $_POST['scode'];
 	   if($code!=$_SESSION['code']){
 	      logmsg(0,'验证码错误！');
 	   }
@@ -30,30 +32,27 @@ $db =new DbHelpClass();
 	 $b =  $db->runsql("insert into `Pl` (cid,pname,pcontent,isn)values(:cid,:pname,:pcontent,:isn)",$arr);
 	 if($b){$db->runsql("update `Log` set num=num+1 where id=:id",array("id"=>$arr['cid']));}
 	 $arr['ptime'] = date('Y-m-d H:i:s');
-	 $str = '<div class="comlist" id="Com-'.$b.'"><div id="Ctext-'.$b.'"><p><strong>'.$arr['pname'].'</strong>：'.$arr['pcontent'].'</p>
-				</div><p class="time">'.$arr['ptime'].'</p>';
-      if($_SESSION['admin']==1) $str = $str.'<p class="navPost"><a href="javascript:void(0)" onclick="repl(\''.$b.'\',\''.$arr['cid'].'\')" title="回复评论">回复</a>&nbsp;<a href="javascript:void(0)" onclick="delpl(\''.$b.'\',\''.$arr['cid'].'\')" class="item">删除</a></p>';	
-				$str = $str.'</div>';
+	 //$str = '<li class="comlist" id="Com-'.$b.'"><div id="Ctext-'.$b.'" class="comment"><div class="comment_meta"><cite>'.$arr['pname'].'</cite><span class="time">'.$arr['ptime'].'</span></div> <p>'.$arr['pcontent'].'</p></div></li>';	
+	 $str = pl_str($b,$arr['pname'],$arr['pcontent'],$arr['ptime']);
      setcookie('pname',$arr['pname'],time()+3600*24*30,'/');
 	 logmsg($b,$str);
+break;
 
-}
-
- if($c == 'shpl'){
+case 'shpl':
 	chkadm();
     $b = $db->runsql("update `Pl` set isn=0 where id=:id",array("id"=>$id));
 	logmsg($b);
- }
+break;
 
-if($c == 'plsave'){
-	chkadm();
+case 'plsave':
+	chkadm();    
 	$arr['id'] = $id;
 	$arr['rcontent'] = $_POST['rlog'];
 	$b =  $db->runsql("update `Pl` set rcontent=:rcontent where id=:id",$arr);
 	logmsg($b);
-}
+break;
 
-if($c == 'ckpass'){
+case 'ckpass':
 	$ps = isset($_POST['ps'])?$_POST['ps']:'';     
 	$rs =  $db->getdata("select content,pass from `Log` where id=:id",array('id'=>$id));
 	$_ps = $rs[0]['pass'];
@@ -64,25 +63,25 @@ if($c == 'ckpass'){
 	logmsg(0,'密码错误！');
 	}
 	
-}
+break;
 
- if($c == 'delpl'){
+case 'delpl':
 	 chkadm(); 
 	 $cid = isset($_GET['cid'])?intval($_GET['cid']):0;
 	 $b =  $db->runsql("delete from `Pl` where id=:id",array("id"=>$id));
 	 if($b){$db->runsql("update `Log` set num=num-1 where id=:id",array("id"=>$cid));} 
 	 logmsg($b);
-} 
+break;
 
-if($c=='saveset'){
+case 'saveset':
    chkadm(); 
    $arr = $_POST; 
    $_SESSION['set'] = '';
    $b =  $db->runsql("update `Set` set webuser=:webuser,webtitle=:webtitle,webdesc=:webdesc,plsh=:plsh,rewrite=:rewrite,safecode=:safecode,icp=:icp where id=1",$arr);
    logmsg($b);
-}
+break;
 
-if($c=='savewid'){
+case 'savewid':
    chkadm(); 
    $arr = $_POST;   
    if($id >0){
@@ -92,23 +91,24 @@ if($c=='savewid'){
 	  $b =  $db->runsql("insert into `Wid`(title,html,ord)values(:title,:html,:ord)",$arr); 	 
    }
    logmsg($b);
-}
+break;
 
-if($c=='delwid'){
-	chkadm();
+case 'delwid':
+	chkadm(); 
 	if($id>4){
      $b =  $db->runsql("delete from `Wid` where id=:id",array('id'=>$id));
      logmsg($b);
 	}
-}
+break;
 
-if($c=='savelog'){
+case 'savelog':
 	chkadm();  
 	$arr['content'] = $_POST['logs'];	
 	$arr['sum'] = strip_tags($_POST['sum']);	
 	$arr['title'] = $_POST['tit'];
 	$arr['pass'] = $_POST['pass'];
 	$arr['pic'] = $_POST['pic'];
+    $arr['pics'] = $_POST['pics'];
 	$c = $_POST['c'];	
 	 
 	  if(empty($arr['sum'])){
@@ -132,26 +132,30 @@ if($c=='savelog'){
 	   }
 	}
 	if($c=='add'){
-    $arr['fm'] = '网页';
-	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,fm,pass)values(:title,:sum,:content,:pic,:fm,:pass)",$arr);
+    $arr['fm'] = agent();
+	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass)values(:title,:sum,:content,:pic,:pics,:fm,:pass)",$arr);
 	}else{
 		$arr['id'] = $id;
 		$arr['atime'] = $_POST['atime'];
 		//print_r($arr);
-	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pass=:pass,atime=:atime where id=:id",$arr);
+	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pics=:pics,pass=:pass,atime=:atime where id=:id",$arr);
 	}
 	logmsg($b);
-}
+break;
 
-if($c == 'zdlog'){
+case 'zdlog':
 	  chkadm();
 	  $arr['id'] = $id;
       $arr['ist'] = intval($d);
       $b = $db->runsql("update `Log` set ist=:ist where id=:id",$arr);
       $msg = $d==0?'置顶':'取消';
 	  logmsg($b,$msg);
-}  
+break;
 
+default:
+   logmsg(0);
+}
+//end switch
 
 function chkadm(){
   if($_SESSION['admin']!=1){

@@ -12,43 +12,45 @@
 class Page {
 
  
-	var $base_url			= ''; // ×î»ù´¡µÄurl£¬·ÖÒ³º¯ÊıÔÚ×îºó¼ÓÉÏÒ³Âë
-	var $total_rows  		= ''; // ×ÜÊı
-	var $per_page	 		= 10; // Ã¿Ò³ÏÔÊ¾µÄÊıÁ¿
-	var $num_links			=  2; // ÏÔÊ¾ÔÚµ±Ç°Ò³×óÓÒµÄÓĞ¼¸¸ö£¬±ÈÈçÀı×ÓÖĞ¾ÍÊÇ2¸ö
-	var $cur_page	 		=  1; // Ä¬ÈÏµ±Ç°Ò³
+	var $base_url			= ''; // æœ€åŸºç¡€çš„urlï¼Œåˆ†é¡µå‡½æ•°åœ¨æœ€ååŠ ä¸Šé¡µç 
+	var $total_rows  		= ''; // æ€»æ•°
+	var $per_page	 		= 10; // æ¯é¡µæ˜¾ç¤ºçš„æ•°é‡
+	var $num_links			=  2; // æ˜¾ç¤ºåœ¨å½“å‰é¡µå·¦å³çš„æœ‰å‡ ä¸ªï¼Œæ¯”å¦‚ä¾‹å­ä¸­å°±æ˜¯2ä¸ª
+	var $cur_page	 		=  1; // é»˜è®¤å½“å‰é¡µ
 	
-	var $first_link   		= '&lsaquo;&lsaquo; First';  //µÚÒ»Ò³µÄÎÄ×Ö
-	var $next_link			= '&gt;';	//ÏÂÒ»Ò³µÄÎÄ×Ö
-	var $prev_link			= '&lt;'; 	//ÉÏÒ»Ò³µÄÎÄ×Ö
-	var $last_link			= 'Last &rsaquo;&rsaquo;'; //×îºóÒ»Ò³µÄÎÄ×Ö
+	var $first_link   		= 'é¦–é¡µ';  //ç¬¬ä¸€é¡µçš„æ–‡å­—
+	var $next_link			= '&gt;';	//ä¸‹ä¸€é¡µçš„æ–‡å­—
+	var $prev_link			= '&lt;'; 	//ä¸Šä¸€é¡µçš„æ–‡å­—
+	var $last_link			= 'å°¾é¡µ'; //æœ€åä¸€é¡µçš„æ–‡å­—
 	
-	var $full_tag_open		= '';  //Èç¹ûÄãÏëÔÚpageÍâÃæ°üÒ»²ãdiv£¬cssµÄ±êÇ©ÇëÓÃÕâ¸ö
-	var $full_tag_close		= '';  //ºó±êÇ©
+	var $full_tag_open		= '';  //å¦‚æœä½ æƒ³åœ¨pageå¤–é¢åŒ…ä¸€å±‚divï¼Œcssçš„æ ‡ç­¾è¯·ç”¨è¿™ä¸ª
+	var $full_tag_close		= '';  //åæ ‡ç­¾
 	
-	var $first_tag_open		= '';  //µÚÒ»Ò³µÄ×ó±ßµÄdiv css ±êÇ©
-	var $first_tag_close	= '&nbsp;'; //µÚÒ»Ò³ÓÒ±ßµÄdiv css ±êÇ©£¬ÏÂÃæÍ¬
+	var $first_tag_open		= '';  //ç¬¬ä¸€é¡µçš„å·¦è¾¹çš„div css æ ‡ç­¾
+	var $first_tag_close	= '&nbsp;'; //ç¬¬ä¸€é¡µå³è¾¹çš„div css æ ‡ç­¾ï¼Œä¸‹é¢åŒ
 	
-	var $last_tag_open		= '&nbsp;'; //×îºóÒ»Ò³
+	var $last_tag_open		= '&nbsp;'; //æœ€åä¸€é¡µ
 	var $last_tag_close		= '';
 	
-	var $cur_tag_open		= '&nbsp;<span class="current">'; //µ±Ç°Ò³
+	var $cur_tag_open		= '&nbsp;<span class="current">'; //å½“å‰é¡µ
 	var $cur_tag_close		= '</span>';
 	
-	var $next_tag_open		= '&nbsp;'; //ÏÂÒ»Ò³
+	var $next_tag_open		= '&nbsp;'; //ä¸‹ä¸€é¡µ
 	var $next_tag_close		= '&nbsp;';
 	var $prev_tag_open		= '&nbsp;';
 	var $prev_tag_close		= '';
 	
-	var $num_tag_open		= '&nbsp;<span>'; //×ÜÊı
+	var $num_tag_open		= '&nbsp;<span>'; //æ€»æ•°
 	var $num_tag_close		= '</span>';
 	
-	var $page_tab_open      = '&nbsp;'; //ÆäËû²»ÊÇµ±Ç°Ò³µÄÒ³ÂëµÄdiv css
+	var $page_tab_open      = '&nbsp;'; //å…¶ä»–ä¸æ˜¯å½“å‰é¡µçš„é¡µç çš„div css
 	var $page_tab_close 	= '';
 	
-	var $uri_segmentation = ''; //´ÓÅäÖÃÎÄ¼şÖĞ¶ÁÈ¡·Ö¸ô·û¡£±¾·ÖÒ³º¯Êı½«ÔÚurl×îºó¼ÓÉÏÒ³Âë
-	var $page_uri = ''; //±ê×¼Éú³ÉµÄuri
-	//´¦Àíurl stu/list/1 /stu-list-2
+	var $uri_segmentation = ''; //ä»é…ç½®æ–‡ä»¶ä¸­è¯»å–åˆ†éš”ç¬¦ã€‚æœ¬åˆ†é¡µå‡½æ•°å°†åœ¨urlæœ€ååŠ ä¸Šé¡µç 
+	var $page_uri = ''; //æ ‡å‡†ç”Ÿæˆçš„uri
+
+	var $suffix = '';
+	//å¤„ç†url stu/list/1 /stu-list-2
 	function create_links(){
 		if($this->total_rows == 0 OR $this->per_page == 0){
 			return '';
@@ -72,15 +74,15 @@ class Page {
 
 	$output = '';
 	$output .= "$this->full_tag_open";
-	$output .= "{$this->first_tag_open}<a href='{$this->base_url}1'>$this->first_link</a>{$this->first_tag_close}";
-	$output .="{$this->prev_tag_open}<a href='{$this->base_url}{$pre_page}'>$this->prev_link</a>{$this->prev_tag_close}";
-	$show_nums = $this->num_links*2+1;// ÏÔÊ¾Ò³ÂëµÄ¸öÊı£¬±ÈÈçÇ°ºó2¸ö£¬¼ÓÉÏ×Ô¼ºÒ»¸ö£¬¹² 5 ¸ö
+	$output .= "{$this->first_tag_open}<a href='{$this->base_url}1{$this->suffix}'>$this->first_link</a>{$this->first_tag_close}";
+	$output .="{$this->prev_tag_open}<a href='{$this->base_url}{$pre_page}{$this->suffix}'>$this->prev_link</a>{$this->prev_tag_close}";
+	$show_nums = $this->num_links*2+1;// æ˜¾ç¤ºé¡µç çš„ä¸ªæ•°ï¼Œæ¯”å¦‚å‰å2ä¸ªï¼ŒåŠ ä¸Šè‡ªå·±ä¸€ä¸ªï¼Œå…± 5 ä¸ª
 	if($num_pages <= $show_nums){
 		for($i = 1;$i<=$num_pages;$i++){
 			if($i == $this->cur_page){
 				$output .= $this->cur_tag_open.$i.$this->cur_tag_close;
 			}else{
-				$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i'>$i</a>{$this->page_tab_close}";
+				$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i{$this->suffix}'>$i</a>{$this->page_tab_close}";
 			}
 		}
 	}else{
@@ -89,7 +91,7 @@ class Page {
 				if($i == $this->cur_page){
 					$output .= $this->cur_tag_open.$i.$this->cur_tag_close;
 				}else{
-					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i'>$i</a>{$this->page_tab_close}";
+					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i{$this->suffix}'>$i</a>{$this->page_tab_close}";
 				}
 			}			
 		}else if($this->cur_page >= ($num_pages - $this->num_links)){
@@ -97,7 +99,7 @@ class Page {
 				if($i == $this->cur_page){
 					$output .= $this->cur_tag_open.$i.$this->cur_tag_close;
 				}else{
-					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i'>$i</a>{$this->page_tab_close}";
+					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i{$this->suffix}'>$i</a>{$this->page_tab_close}";
 				}
 			}
 		}else{
@@ -107,14 +109,14 @@ class Page {
 				if($i == $this->cur_page){
 					$output .= $this->cur_tag_open.$i.$this->cur_tag_close;
 				}else{
-					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i'>$i</a>{$this->page_tab_close}";
+					$output .= "{$this->page_tab_open}<a href='{$this->base_url}$i{$this->suffix}'>$i</a>{$this->page_tab_close}";
 				}
 			}
 		}
 	}
 	
-	$output .="{$this->next_tag_open}<a href='{$this->base_url}{$next_page}'>$this->next_link</a>{$this->next_tag_close}";
-	$output .= "{$this->last_tag_open}<a href='{$this->base_url}{$num_pages}'>$this->last_link</a>{$this->last_tag_close}";
+	$output .="{$this->next_tag_open}<a href='{$this->base_url}{$next_page}{$this->suffix}'>$this->next_link</a>{$this->next_tag_close}";
+	$output .= "{$this->last_tag_open}<a href='{$this->base_url}{$num_pages}{$this->suffix}'>$this->last_link</a>{$this->last_tag_close}";
 	//$output .="{$this->num_tag_open}$total_rows{$this->num_tag_close}";
 	$output .= $this->full_tag_close;	
 	return $output;
@@ -134,7 +136,7 @@ class Page {
 		}
 	}
 	/**
-	 * ³õÊ¼»¯·ÖÒ³º¯Êı
+	 * åˆå§‹åŒ–åˆ†é¡µå‡½æ•°
 	 *
 	 * @param unknown_type $params
 	 */

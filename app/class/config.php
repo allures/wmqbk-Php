@@ -2,14 +2,24 @@
 error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
-$pass = "admin";
+$pass = "admin"; //ä¸Šçº¿å‰è¯·ä¿®æ”¹å¯†ç ï¼
+$template = 'iNove'; //æ¨¡æ¿æ–‡ä»¶å¤¹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
 define('COSUP',0);
 define('ImgW',180);
 define('ImgH',120);
-$admin = $_SESSION['admin'] == 1?1:0;
+define('ImgC','imageView2/1/w/180/h/120');
+define('wmblog','TRUE');
+$admin = isset($_SESSION['admin'])?$_SESSION['admin']:0;
 $set = getset();
+$webtitle= $set['webtitle'];
+$webdesc= $set['webdesc'];
+$rewrite = $set['rewrite'];
+$plsh = $set['plsh'];
+$safecode = $set['safecode'];
+$icp = $set['icp'];
+require_once ROOT_PATH.'assets/'.$template.'/theme.php';
 function mkDirs($path)
 {
 	$array_path = explode("/",$path);
@@ -29,10 +39,28 @@ function mkDirs($path)
 	return true;
 }
 
+function view_admin($id,$ist,$v=1){
+global $admin;
+$txt = $ist==1?'å–æ¶ˆ':'ç½®é¡¶';
+$str = "<a id=\"zd-{$id}\" href=\"javascript:void(0)\" onclick=\"zdlog('{$id}')\">{$txt}</a>&nbsp;<a href=\"?act=edit&id={$id}\" title=\"ç¼–è¾‘å¾®åš\">ç¼–è¾‘</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"dellog('{$id}','1')\">åˆ é™¤</a>"; 
+$def = $v == 1?"<a href=\"JavaScript:history.back();\">è¿”å›</a>&nbsp; <a href=\"JavaScript:DotRoll('pl')\">æˆ‘è¦è¯„è®º</a>":"";
+echo $admin==1?$str:$def;
+}
+
+function pl_admin($id,$cid,$isn){
+global $admin;
+$str = "<a href=\"javascript:void(0)\" onclick=\"repl('{$id}','{$cid}')\" title=\"å›å¤è¯„è®º\">å›å¤</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"delpl('{$id}','{$cid}')\" class=\"item\">åˆ é™¤</a>";
+if($isn==1){
+$str .= "&nbsp;<a id=\"sh-{$id}\" href=\"javascript:void(0)\" onclick=\"shpl('{$id}')\" class=\"item\">å®¡æ ¸</a>";
+}
+echo $admin==1?$str:'';
+}
+
 function getset(){
   $db =new DbHelpClass(); 
   if(empty($_SESSION['set'])){
-     $set = $db->getdata("select * from `Set` where id=1")[0];
+     $rs = $db->getdata("select * from `Set` where id=1");
+     $set = $rs[0];
 	 $_SESSION['set'] = $set;	 
   }else{
      $set = $_SESSION['set'];
@@ -45,6 +73,34 @@ function jsmsg($n,$m){
    $arr['data'] = $m;
    echo json_encode($arr);
 }
+
+
+function vurl($id){
+   global $rewrite;
+   $url =  $rewrite?'post-'.$id.'.html':self().'?act=pl&id='.$id;
+   return $url;
+}
+
+function self(){
+    $self = $_SERVER['PHP_SELF']; 
+    $php_self=substr($self,strrpos($self,'/')+1);
+    return $php_self;
+}
+
+function agent(){
+   if (isset($_SERVER['HTTP_USER_AGENT'])) {     
+    if (preg_match("/(ios|iPad|iPhone|iPod|Android)/i", $_SERVER['HTTP_USER_AGENT'])) {
+      return 'æ‰‹æœº';
+    }elseif(preg_match("/(MicroMessenger)/i", $_SERVER['HTTP_USER_AGENT'])){
+	  return 'å¾®ä¿¡';
+	}else{
+	  return 'ç½‘é¡µ';  
+	} 
+  }else{
+	  return 'ç½‘é¡µ';  
+  } 
+}
+
 function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=false)
 {
 	$_n_w = $maxWidth;
@@ -64,22 +120,22 @@ function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=fa
 	}
 
 	$cw = 0;
-	  $ch = 0;
+	$ch = 0;
 	if($cut){
 
 
-  if ($maxWidth < $_n_w) { //Èç¹ûĞÂ¸ß¶ÈĞ¡ÓÚĞÂÈİÆ÷¸ß¶È
-   $r = $_n_w / $maxWidth; //°´³¤¶ÈÇó³öµÈ±ÈÀıÒò×Ó
-   $maxWidth *= $r; //À©Õ¹Ìî³äºóµÄ³¤¶È
-   $maxHeight *= $r; //À©Õ¹Ìî³äºóµÄ¸ß¶È
-   $ch = ($maxHeight - $_n_h) / 2; //Çó³ö²Ã¼ôµãµÄ¸ß¶È
+  if ($maxWidth < $_n_w) { //å¦‚æœæ–°é«˜åº¦å°äºæ–°å®¹å™¨é«˜åº¦
+   $r = $_n_w / $maxWidth; //æŒ‰é•¿åº¦æ±‚å‡ºç­‰æ¯”ä¾‹å› å­
+   $maxWidth *= $r; //æ‰©å±•å¡«å……åçš„é•¿åº¦
+   $maxHeight *= $r; //æ‰©å±•å¡«å……åçš„é«˜åº¦
+   $ch = ($maxHeight - $_n_h) / 2; //æ±‚å‡ºè£å‰ªç‚¹çš„é«˜åº¦
   }
   
-  if ($maxHeight < $_n_h) { //Èç¹ûĞÂ¸ß¶ÈĞ¡ÓÚÈİÆ÷¸ß¶È
-   $r = $_n_h / $maxHeight; //°´¸ß¶ÈÇó³öµÈ±ÈÀıÒò×Ó
-   $maxWidth *= $r; //À©Õ¹Ìî³äºóµÄ³¤¶È
-   $maxHeight *= $r; //À©Õ¹Ìî³äºóµÄ¸ß¶È
-   $cw = ($maxWidth - $_n_w) / 2; //Çó³ö²Ã¼ôµãµÄ³¤¶È
+  if ($maxHeight < $_n_h) { //å¦‚æœæ–°é«˜åº¦å°äºå®¹å™¨é«˜åº¦
+   $r = $_n_h / $maxHeight; //æŒ‰é«˜åº¦æ±‚å‡ºç­‰æ¯”ä¾‹å› å­
+   $maxWidth *= $r; //æ‰©å±•å¡«å……åçš„é•¿åº¦
+   $maxHeight *= $r; //æ‰©å±•å¡«å……åçš„é«˜åº¦
+   $cw = ($maxWidth - $_n_w) / 2; //æ±‚å‡ºè£å‰ªç‚¹çš„é•¿åº¦
   }	
   $image_p = imagecreatetruecolor($_n_w, $_n_h);	 
 	} else{
@@ -110,6 +166,7 @@ function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=fa
 
 	return true;
 }
+
 class DbHelpClass
     {
         private $conn;
@@ -118,15 +175,17 @@ class DbHelpClass
         
         function __construct()
         {
-            $path=ROOT_PATH."app/db/log.db";
-           // $constr="DRIVER={Microsoft Access Driver (*.mdb)}; DBQ=".realpath($path); 
-            //$this->conn= new PDO("odbc:$constr") or die ("PDO Connection faild.");
-			//$this->conn->prepare('set names gbk;');
-			$this->conn = new PDO('sqlite:'.$path) or die ("PDO Connection faild.");
+            $path=ROOT_PATH."app/db/log.db";  
+			try{
+			   $this->conn = new PDO('sqlite:'.$path); 
+			 }			
+			catch(Exception $errinfo){
+				die ("PDO Connection faild.(å¯èƒ½ç©ºé—´ä¸æ”¯æŒpdo_sqliteï¼Œè¯¦ç»†é”™è¯¯ä¿¡æ¯ï¼š)".$errinfo);
+			}
 
         }
         
-        /*¶ÁÈ¡*/
+        /*è¯»å–*/
         function getdata($sql,$params=array())
         {
             $bind=$this->conn->prepare($sql);
@@ -144,14 +203,14 @@ class DbHelpClass
             return $result;
         }
 
-        function total($tab_name,$tj='')//Çó×Ü¼ÇÂ¼ÊıÄ¿
+        function total($tab_name,$tj='')//æ±‚æ€»è®°å½•æ•°ç›®
            {
              $bind = $this->conn->prepare('SELECT count(id) as c FROM '.$tab_name.' '.$tj);
              $bind->execute();
              $result = $bind->fetchAll();
              return $result[0]['c'];
            }        
-        /*Ìí¼Ó,ĞŞ¸ÄĞèµ÷ÓÃ´Ë·½·¨*/
+        /*æ·»åŠ ,ä¿®æ”¹éœ€è°ƒç”¨æ­¤æ–¹æ³•*/
         function runsql($sql,$params=array())
         {  
             $bind=$this->conn->prepare($sql);

@@ -1,6 +1,6 @@
 <?php
 session_start();
-getValidate(100,27);
+getValidate(100,25);
 function getValidate($w,$h){
   $img = imagecreate($w,$h);
   $gray = imagecolorallocate($img,255,255,255);
