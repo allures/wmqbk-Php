@@ -1,5 +1,7 @@
 # 无名微博客PHP版
 
+![无名轻博客](https://gitee.com/daimaguo/wmphp/blob/master/%e6%88%aa%e5%9b%be.jpg "无名轻博客")
+
 #### 介绍
 无名轻博客v1.0正式版发布
 运行环境：PHP>=5.4 pdo_sqlite
@@ -16,7 +18,7 @@
 
 #### 安装教程
 
-1. 下载 https://gitee.com/daimaguo/wmphp/blob/master/%E6%97%A0%E5%90%8D%E8%BD%BB%E5%8D%9A%E5%AE%A2v1.0.zip
+1. 下载 [点击下载](https://gitee.com/daimaguo/wmphp/blob/master/%E6%97%A0%E5%90%8D%E8%BD%BB%E5%8D%9A%E5%AE%A2v1.0.zip)
 2. 解压
 3. 使用
 
