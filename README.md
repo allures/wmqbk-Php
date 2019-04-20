@@ -16,7 +16,7 @@
 
 #### 安装教程
 
-1. 下载 https://gitee.com/daimaguo/wmphp/blob/master/qblog.zip
+1. 下载 https://gitee.com/daimaguo/wmphp/blob/master/%E6%97%A0%E5%90%8D%E8%BD%BB%E5%8D%9A%E5%AE%A2v1.0.zip
 2. 解压
 3. 使用
 
