@@ -1,6 +1,6 @@
 # 无名微博客PHP版
 
-![无名轻博客](https://gitee.com/daimaguo/wmphp/blob/master/%e6%88%aa%e5%9b%be.jpg "无名轻博客")
+![无名轻博客](https://gitee.com/daimaguo/wmphp/blob/master/%E6%88%AA%E5%9B%BE.jpg)
 
 #### 介绍
 无名轻博客v1.0正式版发布
