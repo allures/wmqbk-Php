@@ -1,20 +1,12 @@
-<?php if(!defined('wmblog'))exit; ?><!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-<title>侧栏_无名轻博客</title>
-<link href="assets/<?php echo $template;?>/style.css" rel="stylesheet" type="text/css" /> 
-</head>
-<body>
-<div id="wrap">
-   <?php include "head.php";?>
+<?php if(!defined('wmblog'))exit; ?>
+<?php include "head.php";?>
   <div id="content">
-    <div id="main"> 
+    <div id="main" style="background:#fff;padding:15px;box-sizing:border-box;"> 
+	 
    <ul class="tabtitle">
 	  <?php foreach($wid as $v){?><li><?php echo $v['title']; ?></li> <?php } ?>
 	<li>添加边栏</li>
-   </ul>
+   </ul> 
 	<?php foreach($wid as $v){?>
 	<div class="tabcontent" style="display:none">
      <form id="formwid<?php echo $v['id'];?>">
@@ -24,47 +16,43 @@
 	</div> 
 	<div class="s_h">
 		<strong>代码:</strong>（系统标签支持 comment topic）
-		<textarea name="html" class="input_textarea" onkeydown="if(event.keyCode==13){return false;}"><?php echo $v['html']; ?></textarea>
+		<textarea name="html" class="input_textarea"><?php echo $v['html']; ?></textarea>
 	</div>
 	<div class="s_e">
 		<strong>排序:</strong>
-		<input type="text" class="input_narrow" name="ord" value="<?php echo $v['ord']; ?>" maxlength="15" />
+		<input type="number" class="input_narrow" name="ord" value="<?php echo $v['ord']; ?>" maxlength="15" />
 	</div> 
 	<div class="s_s">
 		<button name="save" type="button"  class="btn" onclick="savewid(<?php echo $v['id']; ?>)"> 保存 </button> 
-        <button name="del" type="button"  class="btn" onclick="delwid(<?php echo $v['id']; ?>)"> 删除 </button>
+        <button name="del" type="button"  class="btn" onclick="delwid(<?php echo $v['id']; ?>)"> 删除 </button> <span id="errmsg"></span>
 	</div>
-	<div id="result" class="s_r"></div>
 	</form>
 	</div>
    <?php } ?>
    <div class="tabcontent"  style="display:none">
-    <form id="formwid0">
+   <form id="formwid0">
 	<div class="s_e">
 		<strong>标题:</strong>
 		<input type="text" class="input_narrow" name="title" value="" maxlength="15" />
 	</div> 
 	<div class="s_h">
 		<strong>代码:</strong>（系统标签支持 comment topic）
-		<textarea name="html" class="input_textarea" onkeydown="if(event.keyCode==13){return false;}"></textarea>
+		<textarea name="html" class="input_textarea"></textarea>
 	</div>
 	<div class="s_e">
 		<strong>排序:</strong>
-		<input type="text" class="input_narrow" name="ord" value="" maxlength="15" />
+		<input type="number"  class="input_narrow" name="ord" value="5" maxlength="15" />
 	</div> 
 	<div class="s_s">
-		<button name="save" type="button"  onclick="savewid(0)" class="btn"> 保存 </button>
+		<button name="save" type="button" onclick="savewid(0)" class="btn"> 保存 </button>  <span id="errmsg"></span>
 	</div>
-	<div id="result" class="s_r"></div>
     </form>
 	</div>
     </div>
      <?php include ("right.php");?>
   </div>
-  <div id="footer"><?php include ("foot.php");?></div>
-</div>
-<script type="text/javascript" language="javascript" src="assets/js/jquery.min.js"></script>
-<script type="text/javascript" language="javascript" src="assets/js/ajax.js"></script>
+  </div>
+<?php include ("foot.php");?>
 <script language="javascript" type="text/javascript">
 $(document).ready(function () {
 $('.tabtitle li:first').addClass('on');

@@ -3,14 +3,13 @@ error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
 $pass = "admin"; //上线前请修改密码！
-$template = 'iNove'; //模板文件夹
+$template = 'qblog'; //模板文件夹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
-define('COSUP',0);
 define('ImgW',180);
 define('ImgH',120);
-define('ImgC','imageView2/1/w/180/h/120');
 define('wmblog','TRUE');
+define('VER','v1.1');
 $admin = isset($_SESSION['admin'])?$_SESSION['admin']:0;
 $set = getset();
 $webtitle= $set['webtitle'];
@@ -20,6 +19,15 @@ $plsh = $set['plsh'];
 $safecode = $set['safecode'];
 $icp = $set['icp'];
 require_once ROOT_PATH.'assets/'.$template.'/theme.php';
+spl_autoload_register('load_plug');
+function load_plug($classname)
+{
+    $filename = ROOT_PATH."app/plug/".$classname.".php";
+    if (is_file($filename))
+    {
+        include $filename;
+    }
+}
 function mkDirs($path)
 {
 	$array_path = explode("/",$path);
@@ -30,7 +38,7 @@ function mkDirs($path)
 	{
 		$_path .= $array_path[$i]."/";
 
-		if( !empty($array_path[$i]) && !file_exists($_path))
+		if( !empty($array_path[$i]) && !is_dir($_path))
 		{
 			mkdir($_path,0777);
 		}
@@ -38,11 +46,34 @@ function mkDirs($path)
 	
 	return true;
 }
-
+function delpic($pics){
+	if(!empty($pics))
+	{
+		$pic_arr = explode(",",$pics);
+		foreach($pic_arr as $pic){
+		   $_pic = str_replace('..','',ROOT_PATH.$pic);
+		   if(strpos($_pic,'/b_')>0){
+		     $b_pic = $_pic;
+			 $s_pic = str_replace("/b_","/s_",$_pic);
+		   }else{
+		     $s_pic = $_pic;
+             $b_pic = str_replace("/s_","/b_",$_pic);
+		   }	
+		   if(is_file($b_pic))
+		   {
+			@unlink($b_pic);
+		   }	 
+		   if(is_file($s_pic))
+		   {
+			@unlink($s_pic);
+		   }
+		} 
+	}
+}
 function view_admin($id,$ist,$v=1){
-global $admin;
+global $admin,$file;
 $txt = $ist==1?'取消':'置顶';
-$str = "<a id=\"zd-{$id}\" href=\"javascript:void(0)\" onclick=\"zdlog('{$id}')\">{$txt}</a>&nbsp;<a href=\"?act=edit&id={$id}\" title=\"编辑微博\">编辑</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"dellog('{$id}','1')\">删除</a>"; 
+$str = "<a id=\"zd-{$id}\" href=\"javascript:void(0)\" onclick=\"zdlog('{$id}')\">{$txt}</a>&nbsp;<a href=\"{$file}?act=edit&id={$id}\" title=\"编辑微博\">编辑</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"dellog('{$id}','1')\">删除</a>"; 
 $def = $v == 1?"<a href=\"JavaScript:history.back();\">返回</a>&nbsp; <a href=\"JavaScript:DotRoll('pl')\">我要评论</a>":"";
 echo $admin==1?$str:$def;
 }
@@ -66,6 +97,29 @@ function getset(){
      $set = $_SESSION['set'];
   }
   return $set;
+}
+
+function logmsg($b,$msg='操作成功！'){
+    if($b>0){
+	   $arr['result'] = 200;
+	   $arr['message'] = $msg;
+	}else{
+	    $arr['result'] = 500;
+		if(empty($msg)){
+		  $arr['message'] = '操作失败！';
+		}else{
+	      $arr['message'] = $msg;
+		}
+	}	
+	$arr['id'] = $b;
+	echo json_encode($arr);exit();
+}
+
+function chkadm(){
+  if($_SESSION['admin']!=1){
+	  logmsg(0,'未登录！');
+      exit();
+  }
 }
 
 function jsmsg($n,$m){

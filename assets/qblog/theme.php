@@ -1,4 +1,7 @@
- <?php
+<?php
+$tit = '首页';
+$key = '无名轻博客,轻博客,php博客,无名微博,微博';
+$des = $webdesc;
 function topic($n){
 	global $db;
 	$str = '';
@@ -6,10 +9,11 @@ function topic($n){
 	foreach($rs as $v){	
 		if(empty($v['title'])){
 		  $title = mb_substr(strip_tags($v['sum']),0,14,'utf-8');
+		  if(empty($title)) {$title = '#图片分享';}
 		}else{
 		   $title = $v['title'];
 		}
-	  $str .= '<li><a href="'. vurl($v['id']) .'">'.$title.'</a> ('.$v['num'].')</li>';
+	  $str .= '<li><a href="'. vurl($v['id']) .'">'.$title.'</a> <i class="iconfont">&#xe654;</i> '.$v['num'].'</li>';
 	}
    return $str;
 }
@@ -26,15 +30,15 @@ function comment($n){
 		}
 	  $str .= '<li><a href="'. vurl($v['cid']) .'#Com-'.$v['id'].'"><strong>'.$v['pname'].'</strong> : '.$pcontent.'</a>';
 
-	  if(!empty($v['rcontent'])) {$str .= ' <img title="已回复" src="assets/'.$template.'/images/reply.gif" width="10" height="10" />';}
+	  if(!empty($v['rcontent'])) {$str .= ' <i class="iconfont" style="color:#F60;font-size:11px">&#xe654;</i>';}
        $str .='</li>';
 	}
    return $str;
-} 
+}
 
-function pl_str($id,$pname,$pcontent,$ptime){
-  $pl_tpl = '<div class="comlist" id="Com-%s"><div id="Ctext-%s"><p><strong>%s</strong>：%s</p></div><p class="time">%s</p></div>';
-  return sprintf($pl_tpl,$id,$id,$pname,$pcontent,$ptime);
+function pl_str($id,$pname,$pcontent,$ptime){ 
+  $pl_tpl = '<li class="comlist" id="Com-%s"><div id="Ctext-%s" class="comment"><div class="comment_meta"><cite>%s</cite><span class="time">%s</span></div> <p>%s</p></div></li>';
+  return sprintf($pl_tpl,$id,$id,$pname,$ptime,$pcontent);
 }
 
  function timeago($ptime) {
@@ -58,4 +62,5 @@ function pl_str($id,$pname,$pcontent,$ptime){
             }
         }
 }
+
 ?>

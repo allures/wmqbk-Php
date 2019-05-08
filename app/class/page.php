@@ -27,23 +27,23 @@ class Page {
 	var $full_tag_close		= '';  //后标签
 	
 	var $first_tag_open		= '';  //第一页的左边的div css 标签
-	var $first_tag_close	= '&nbsp;'; //第一页右边的div css 标签，下面同
+	var $first_tag_close	= ''; //第一页右边的div css 标签，下面同
 	
-	var $last_tag_open		= '&nbsp;'; //最后一页
+	var $last_tag_open		= ''; //最后一页
 	var $last_tag_close		= '';
 	
-	var $cur_tag_open		= '&nbsp;<span class="current">'; //当前页
+	var $cur_tag_open		= '<span class="current">'; //当前页
 	var $cur_tag_close		= '</span>';
 	
-	var $next_tag_open		= '&nbsp;'; //下一页
-	var $next_tag_close		= '&nbsp;';
-	var $prev_tag_open		= '&nbsp;';
+	var $next_tag_open		= ''; //下一页
+	var $next_tag_close		= '';
+	var $prev_tag_open		= '';
 	var $prev_tag_close		= '';
 	
-	var $num_tag_open		= '&nbsp;<span>'; //总数
+	var $num_tag_open		= '<span>'; //总数
 	var $num_tag_close		= '</span>';
 	
-	var $page_tab_open      = '&nbsp;'; //其他不是当前页的页码的div css
+	var $page_tab_open      = ''; //其他不是当前页的页码的div css
 	var $page_tab_close 	= '';
 	
 	var $uri_segmentation = ''; //从配置文件中读取分隔符。本分页函数将在url最后加上页码

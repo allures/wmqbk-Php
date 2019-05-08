@@ -1,7 +1,7 @@
 <?php
 $t1 = microtime(true);
-require_once 'app/class/config.php';
-require_once 'app/class/page.php';
+require 'app/class/config.php';
+require 'app/class/page.php';
 $db = new DbHelpClass();
 $p = isset($_GET['p']) ? intval($_GET['p']) : 1;
 $act = isset($_GET['act']) ? $_GET['act'] : '';
@@ -13,6 +13,7 @@ $start = $per_page * ($p - 1);
 $wid = $db->getdata("select * from `Wid` order by ord");
 switch ($act) {
     case 'login':
+		$tit = '登陆';
         $tpl = 'login.php';
         break;
 
@@ -32,37 +33,47 @@ switch ($act) {
         break;
 
     case 'wid':
+		chkadm();
+	    $tit = '边栏设置';
         $tpl = 'widget.php';
         break;
 
     case 'add':
-        $btn = '发布';
+		chkadm();
+        $tit = '发布';	 
         $tpl = 'post.php';
         break;
 
     case 'edit':
+		chkadm();
         $rs = $db->getdata("select * from `Log` where id=:id", array(
             'id' => $id
         ));
         $v = $rs[0];
-        $btn = '编辑';
+        $tit = '编辑';
         $tpl = 'post.php';
         break;
 
     case 'set':
+		chkadm();
+	    $tit = '设置';
         $tpl = 'setting.php';
         break;
 
     case 'pl':
+
         $rs = $db->getdata("select * from `Log` where id=:id", array(
             'id' => $id
-        ));
+        ));	
         $v = $rs[0];
+		if(empty($v)){@header("http/1.1 404 not found");@header("status: 404 not found");exit('404 not found');}
         $title = $v['title'] == '' ? mb_substr(strip_tags($v['sum']) , 0, 15, 'utf-8') : $v['title'];
         $sum = strip_tags($v['sum']);
         $list = $db->getdata("select * from `Pl` where cid=:id", array(
             'id' => $id
         ));
+		$tit = $title;
+		$des = $sum;
         $tpl = 'view.php';
         break;
 
@@ -82,6 +93,7 @@ switch ($act) {
         $page_config['cur_page'] = $p; //传递当前页码
         $pageStr = new Page($page_config);
         $pagelist = $pageStr->create_links(); //创建新页码
+		$tit = '评论列表';
         $tpl = 'plist.php';
         break;
 
@@ -96,6 +108,7 @@ switch ($act) {
             $list = $db->getdata("select * from `Log` where title like :s or content like :s order by ist desc,atime desc limit $start,$per_page", array(
                 "s" => $s
             ));
+			$tit = '搜索结果-'.$s;
         }
         if ($rewrite == 1 && empty($s)) {
             $page_config['base_url'] = "index-"; //当前的url，如果有参数需要拼接一下url
@@ -112,4 +125,8 @@ switch ($act) {
         $pagelist = $pageStr->create_links(); //创建新页码
         $tpl = 'index.php';
 }
-require_once 'assets/'.$template .'/'. $tpl;
+include 'assets/'.$template .'/'. $tpl;
+/*$db->runsql('DELETE FROM Log');
+$db->runsql("DELETE FROM sqlite_sequence WHERE name = 'Log'"); 
+$db->runsql('DELETE FROM Pl');
+$db->runsql("DELETE FROM sqlite_sequence WHERE name = 'Pl'");*/

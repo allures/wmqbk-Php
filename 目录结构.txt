@@ -1,0 +1,43 @@
+│  index.php 程序入口文件
+├─app 动态文件目录
+│  ├─class 功能目录
+│  │      api.php ajax管理操作文件
+│  │      codes.php 验证码
+│  │      config.php 配置/密码公用函数类
+│  │      page.php 分页类
+│  │      upload.php 上传类
+│  │      
+│  └─db 数据库
+│          log.db
+│          
+└─assets 静态文件目录
+    ├─file 图片上传目录
+    ├─js   js目录
+    │  │  ajax.js  ajax操作js文件
+    │  │  jquery.min.js jquery库
+    │  │  
+    │  ├─edit 编辑器目录
+    │  │      nicEdit.js
+    │  │      nicEditorIcons.gif
+    │  │      
+    │  └─laydate 日期插件目录
+    │                      
+    └─qblog  模板目录
+        │  foot.php  底部
+        │  head.php 头部
+        │  index.php 首页
+        │  login.php  登陆
+        │  plist.php  评论列表
+        │  post.php  发布/编辑
+        │  right.php  右侧边栏
+        │  setting.php 设置
+        │  style.css  样式文件
+        │  theme.php 模板配置文件
+        │  view.php 文章页
+        │  widget.php 边栏设置
+        │  
+        └─images   字体图标目录
+                iconfont.eot
+                iconfont.svg
+                iconfont.ttf
+                iconfont.woff           

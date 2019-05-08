@@ -10,8 +10,12 @@ switch ($c) {
 
 case 'dellog':
 	 chkadm();
-	 $b =  $db->runsql("delete from `Log` where id=:id",array("id"=>$id));
-     $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));
+     $data = $db->getdata("select `pics` from `Log` where id=:id", array(
+            'id' => $id
+     ));
+	 $b =  $db->runsql("delete from `Log` where id=:id",array("id"=>$id));     
+     $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));	
+	 delpic($data[0]['pics']);
 	 logmsg($b);
 break;
 
@@ -22,9 +26,14 @@ case 'addpl':
 	      logmsg(0,'验证码错误！');
 	   }
 	 }
+     $v = $db->getdata("select id from `Log` where id=:id",array('id'=>$id));
+	 if(empty($v)){
+	   logmsg(0,'文章不存在！');
+	 }
 	 $arr['cid'] = $id;
 	 $arr['pname'] = mb_substr(strip_tags(trim($_POST['pname'])),0,20,'utf-8');
      $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['plog'])),0,250,'utf-8');
+	 if(empty($arr['pname']) or empty($arr['pcontent'])) logmsg(0,'昵称/内容为空！');
 	 $arr['isn'] = $set['plsh'];
 	 if($admin !=1){
 	    if($arr['pname'] == $set['webuser']){ $arr['pname']='网友';}
@@ -32,7 +41,6 @@ case 'addpl':
 	 $b =  $db->runsql("insert into `Pl` (cid,pname,pcontent,isn)values(:cid,:pname,:pcontent,:isn)",$arr);
 	 if($b){$db->runsql("update `Log` set num=num+1 where id=:id",array("id"=>$arr['cid']));}
 	 $arr['ptime'] = date('Y-m-d H:i:s');
-	 //$str = '<li class="comlist" id="Com-'.$b.'"><div id="Ctext-'.$b.'" class="comment"><div class="comment_meta"><cite>'.$arr['pname'].'</cite><span class="time">'.$arr['ptime'].'</span></div> <p>'.$arr['pcontent'].'</p></div></li>';	
 	 $str = pl_str($b,$arr['pname'],$arr['pcontent'],$arr['ptime']);
      setcookie('pname',$arr['pname'],time()+3600*24*30,'/');
 	 logmsg($b,$str);
@@ -100,7 +108,11 @@ case 'delwid':
      logmsg($b);
 	}
 break;
-
+case 'delpic':
+	chkadm();
+	$pic = $_POST['pic'];
+    delpic($pic);
+break;
 case 'savelog':
 	chkadm();  
 	$arr['content'] = $_POST['logs'];	
@@ -120,25 +132,24 @@ case 'savelog':
 	    
 	  }
  
-	if(!empty($arr['pic'])){
-	   if(COSUP == 0){
+	if(!empty($arr['pic'])){	   
 	   if(strpos($arr['pic'],'/b_')>1){
 	   $Image = ROOT_PATH.$arr['pic'];
 	   $imgInfo = @getimagesize($Image);
        $saveImage = str_replace('/b_','/s_',$Image);
 	   createImg($Image,$saveImage,$imgInfo,ImgW,ImgH,1);
        $arr['pic'] = str_replace(ROOT_PATH,'',$saveImage);
-		   }
-	   }
+		}	   
 	}
 	if($c=='add'){
     $arr['fm'] = agent();
-	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass)values(:title,:sum,:content,:pic,:pics,:fm,:pass)",$arr);
+	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass)values(:title,:sum,:content,:pic,:pics,:fm,:pass)",$arr);	 
 	}else{
 		$arr['id'] = $id;
 		$arr['atime'] = $_POST['atime'];
 		//print_r($arr);
 	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pics=:pics,pass=:pass,atime=:atime where id=:id",$arr);
+		if($b==1) $b=$id;
 	}
 	logmsg($b);
 break;
@@ -156,24 +167,3 @@ default:
    logmsg(0);
 }
 //end switch
-
-function chkadm(){
-  if($_SESSION['admin']!=1){
-     exit('0');
-  }
-}
-
-function logmsg($b,$msg='操作成功！'){
-    if($b>0){
-	   $arr['result'] = 200;
-	   $arr['message'] = $msg;
-	}else{
-	    $arr['result'] = 500;
-		if(empty($msg)){
-		  $arr['message'] = '操作失败！';
-		}else{
-	      $arr['message'] = $msg;
-		}
-	}
-	echo json_encode($arr);exit();
-}

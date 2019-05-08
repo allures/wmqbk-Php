@@ -1,22 +1,24 @@
 ﻿function ckradd(e,f){
   if($("#"+e+"pname").val()==""){
-  alert("请输入昵称后再提交");
+  errmsg("请输入昵称后再提交");
   $("#"+e+"pname").focus();
   return false;
   }
   var val=$("#"+e+"plog").val();
   if(val.length<5 || val.length>200){
-	alert("评论内容必须在5-200字之间，请修改后再提交！");
+	errmsg("评论内容必须在5-200字之间，请修改后再提交！");
    $("#"+e+"plog").focus();
    return false;  	  
   }
   var code=$("#safecode").val();
   if (f=='1'&&code==''){	
-      alert("请正确输入右侧答案！");$("#safecode").focus();return false; 
+      errmsg("请正确输入右侧答案！");$("#safecode").focus();return false; 
  } 
  return true
 }
-
+function errmsg(s,el=''){ 
+   $(el+'#errmsg').show().text(s).fadeOut(2000);
+}
 function ckse(){
 	var val=$("#key").val();
   if(val.length<2 || val.length>10){
@@ -37,10 +39,10 @@ function StopButton(id,s){
 	} 
 }
  
-function savelog() {
+function savelog() { 
 	var tit=$("#tit").val(),
 		sum = $("#sum").val(),
-		log = $(".nicEdit-main:eq(0)").html(),
+		log = ndPanel.nicInstances[0].getContent(),
 		pic = $("#pic").val(),
 		pics = pic_arr.join(','),
 		id = $("#id").val(),
@@ -48,12 +50,10 @@ function savelog() {
 		pass=$("#pass").val(),
 		atime = $("#atime").val();
   if(log =="" && pic =="" ){
-    alert("空空如也！");
-    $("#log").focus();
+    errmsg("写点什么吧！");   
+    $(".nicEdit-main").focus();
     return false;
   }
-  //console.log(pic_arr);
-  //return;
 	$.post("./app/class/api.php?act=savelog&id=" + id, {
 		tit:tit,
 		sum:sum,
@@ -72,26 +72,32 @@ function savelog() {
 			    $("#pic").val('');
 				pic_arr = [];
                 $(".picls").remove();
-					
-				}
+			}
 		}
-		alert(data.message)
+		errmsg(data.message);
+		window.location.href = 'index.php?act=pl&id='+data.id;
 	}, 'json');
 
 }
 function saveset(){
     var data = $("#formset").serialize();
     $.post("./app/class/api.php?act=saveset",data , function(data) {
-		alert(data.message)
+		errmsg(data.message)
 	}, 'json');
 
 }
 function savewid(id){
+   var el = $("#formwid"+id+" input[name='title']")
    var data = $("#formwid"+id).serialize();
+   if(el.val()=='') { 
+	   el.focus();
+	   errmsg("标题不能为空！","#formwid"+id+" ");
+	   return false
+   }; 
    $.post("./app/class/api.php?act=savewid&id="+id,data , function(data) {
-		alert(data.message)
+		errmsg(data.message,"#formwid"+id+" ")
 	}, 'json');
-
+ 
 }
 function delwid(id){
 	if(confirm('确定要删除吗?'))
@@ -132,8 +138,9 @@ function addpl(id,f){
      if(data.result == '200')
 	 {
 		 $(".comment_list").append(data.message);$("#plog").val('');$("#safecode").val('');reloadcode();StopButton('add',9);
+		 errmsg('')
 	 }else{
-	     alert(data.message);$("#safecode").val('');reloadcode();$("#safecode").focus();
+	     errmsg(data.message);$("#safecode").val('');reloadcode();$("#safecode").focus();
 	 }											 
 	},'json');		
 }
@@ -141,7 +148,7 @@ function repl(pid,cid){
 	var ore = $('#Ctext-'+pid).find('.re span').text();
 	var x = 1;
 	if (ore == ""){x=0;}
-    var rebox = '<div class="rebox"><input placeholder="随便说点什么吧..." name="rlog" rows="3" id="rlog" class="input_narrow relog" value="'+ore+'"> <button name="re" id="re" class="btn" onclick="plsave('+cid+','+pid+','+x+')"> 回 复 </button> <button onclick="capl()" class="btn"> 取 消 </button></div>';
+    var rebox = '<div class="rebox"><textarea required="required" placeholder="请输入回复内容..." name="rlog" rows="3" id="rlog" class="input_narrow relog">'+ore+'</textarea> <button name="re" id="re" class="btn" onclick="plsave('+cid+','+pid+','+x+')"> 回 复 </button> <button onclick="capl()" class="btn"> 取 消 </button></div>';
 	$('.rebox').remove();
 	$('#Ctext-'+pid).append(rebox);
 }
@@ -151,7 +158,7 @@ function capl(){
 function plsave(id,pid,x){	
 	var rlog = $("#rlog").val();
 	if(rlog==''){
-		alert('请输入内容后再提交');
+		$("#rlog").focus();
 		return false;
 	}
 	$.post("./app/class/api.php?act=plsave&id=" + pid + "&cid=" + pid, {
@@ -173,7 +180,9 @@ function plsave(id,pid,x){
 function ckpass(id){	
 	var ps= $("#password").val();
 	if (ps!=''){
-	$.post("./app/class/api.php?act=ckpass&id="+id, {ps:ps}, function(data) {if(data.result=='200'){ $("#password").parent().html(data.message)}else{alert(data.message);}},'json');}	
+	$.post("./app/class/api.php?act=ckpass&id="+id, {ps:ps}, function(data) {if(data.result=='200'){ $("#article .text").html(data.message)}else{alert(data.message);}},'json');}else{
+	$("#password").focus();
+	}	
 }
 
 function DotRoll(elm) {
@@ -188,7 +197,22 @@ function getFileName(o){
 }
 
 $(document).ready(function () {
-  $("#nav li a:not(:first)").each(function(){
+
+$('#menu_toggle').on("click","i",function(e){
+   e.preventDefault();
+   $(this).toggleClass('close');
+   $('#nav').slideToggle();
+})
+ 
+$(window).resize(function(){
+	 var w = $(window).width();
+	 if(w>650) {$('#nav').show();}else{
+       $('#menu').removeClass('close');
+	   $('#nav').hide();
+	 } 
+});				
+
+$("#nav li a:not(:first)").each(function(){
 	    var url = String(window.location)	 
         var $this = $(this);	 
         if(url.indexOf($this[0].href)>-1){

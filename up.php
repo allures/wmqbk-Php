@@ -2,7 +2,7 @@
 header("Content-type: text/html; charset=utf-8");
 require_once 'app/class/config.php';
 if(!isset($_GET['up'])){
-echo '此文件升级预览版数据库为正式版，使用前请备份好数据库文件。<br />';
+echo '此文件升级v1.0预览版数据库为v1.0正式版，使用前请备份好数据库文件。<br />';
 echo '<a href="?up=1">开始升级</a>';
 exit();
 }
