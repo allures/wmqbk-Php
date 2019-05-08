@@ -16,6 +16,7 @@
 使用前请修改密码
 1、默认密码：admin
 2、配置文件：app/class/config.php
+3、wx.php为小程序接口文件，up.php为预览版升级程序，两个文件无用可以删除。
 
 
 
