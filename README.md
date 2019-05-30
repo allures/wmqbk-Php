@@ -30,7 +30,7 @@
 
 #### 安装教程
 
-1. 下载 [点击下载](https://gitee.com/daimaguo/wmphp/blob/master/blogv1.1.zip)
+1. 下载 
 2. 解压
 3. 使用
 
