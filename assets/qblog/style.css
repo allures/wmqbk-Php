@@ -152,7 +152,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .desc{padding-left:6px;}
 }
 @media screen and (max-width:650px){
-input,textarea{-webkit-appearance:none;outline:none;}
+input,textarea{outline:none;}
 html{-webkit-text-size-adjust: none}
 #header p,.pagination .info,.desc{display: none}
 #header{position: fixed;z-index: 99;}
