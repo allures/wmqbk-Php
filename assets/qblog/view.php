@@ -11,7 +11,7 @@
 	<?php  view_admin($v['id'],$v['ist']);?>
 </p></div>  
    <div id="comments">
-   <h3><?php if($v['lock']==1) {echo '评论已关闭！';} else {echo '共有'.$v['num'].'条评论！'; }?></h3>
+   <h3><?php if($v['lock']==1 || $v['hide']==1) {echo '评论已关闭！';} else {echo '共有'.$v['num'].'条评论！'; }?></h3>
         <ol class="comment_list">
         <?php  $l=1;foreach($list as $v){?>
 		<li class="comlist" id="Com-<?php  echo $v['id'];?>">
@@ -26,7 +26,7 @@
 		</li>
        <?php $l++;} ?>
        </ol>
-<div id="respond" class="comment-respond"<?php if($v['lock']==1) echo ' style="display:none"'?>>
+<div id="respond" class="comment-respond"<?php if($v['lock']==1 || $v['hide']==1) echo ' style="display:none"'?>>
 		<h3 id="reply-title" class="comment-reply-title">发表评论</h3>
  <a name="pl"></a>
 <div class="s_e mt10"><input name="pname" tabindex="1" placeholder="您的昵称" id="pname" type="text" class="input_narrow" value="<?php echo @$_COOKIE['pname'];?>" maxlength="10" /></div>

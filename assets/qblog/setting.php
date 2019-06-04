@@ -16,11 +16,11 @@
 	</div> 
 	<div class="s_e">
 		<strong>微博说明:</strong> 
-		<textarea name="webdesc" class="input_textarea" onkeydown="if(event.keyCode==13){:return false;}"><?php echo $set['webdesc'];?></textarea>
+		<textarea name="webdesc" class="input_textarea" onkeydown="if(event.keyCode==13){return false;}"><?php echo $set['webdesc'];?></textarea>
 	</div> 
 	<div class="s_e">
 		<strong>导航菜单:</strong> 
-		<textarea name="webmenu" class="input_textarea" onkeydown="if(event.keyCode==13){:return false;}"><?php echo $set['webmenu'];?></textarea>
+		<textarea name="webmenu" class="input_textarea"><?php echo $set['webmenu'];?></textarea>
 	</div> 
 	<div class="s_e">
 		<strong>备案号:</strong>

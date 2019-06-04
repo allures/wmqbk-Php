@@ -27,7 +27,9 @@
   </div>
 <?php include ("foot.php");?>
 <script type="text/javascript" src="assets/js/wangeditor/wangEditor.min.js"></script>
+<?php if($act ==='edit'){?>
 <script type="text/javascript" language="javascript" src="assets/js/laydate/laydate.js"></script>
+<?php }?>
 <script>
 function delpic(e){
    var p = e.attr('src');

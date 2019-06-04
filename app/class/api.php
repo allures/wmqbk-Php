@@ -85,7 +85,7 @@ break;
 case 'saveset':
    chkadm(); 
    $arr = $_POST; 
-   $_SESSION['set'] = '';
+   $_SESSION[KEY.'set'] = '';
    $b =  $db->runsql("update `Set` set webuser=:webuser,webtitle=:webtitle,webdesc=:webdesc,plsh=:plsh,rewrite=:rewrite,safecode=:safecode,icp=:icp,webmenu=:webmenu where id=1",$arr);
    logmsg($b);
 break;

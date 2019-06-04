@@ -202,7 +202,6 @@ function getFileName(o){
 }
 
 $(document).ready(function () {
-
 $('#menu_toggle').on("click","i",function(e){
    e.preventDefault();
    $(this).toggleClass('close');
@@ -217,12 +216,25 @@ $(window).resize(function(){
 	 } 
 });				
 
-$("#nav li a:not(:first)").each(function(){
+/*$("#nav li a:not(:first)").each(function(){
 	    var url = String(window.location)	 
         var $this = $(this);	 
         if(url.indexOf($this[0].href)>-1){
-			 $("#nav li:first").removeClass('page_item');
+			 $("#nav li a:first").removeClass('on');
              $this.addClass("on");
         }    
-    });
+    });*/
 })
+
+$("#nav li a").each(function(e){
+	    var url = String(window.location)	 
+        var $this = $(this);
+		//console.log(url)
+        //console.log($(this)[0].href)
+		 if(url==$(this)[0].href){
+		   $(this).addClass("on");
+		   console.log(this)
+		}
+          
+    });
+ 
