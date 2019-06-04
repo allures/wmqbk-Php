@@ -7,6 +7,9 @@
 <meta name="keywords" content="<?php echo $key;?>" />
 <meta name="description" content="<?php echo $des;?>" />
 <link href="assets/<?php echo $template;?>/style.css" rel="stylesheet" type="text/css" />
+<?php if($tpl=='post.php'){?>
+<link href="assets/js/wangeditor/css/wangEditor.min.css" rel="stylesheet" type="text/css" />
+<?php }?>
 </head>
 <body>
 <div id="wrap"> 
@@ -17,15 +20,10 @@
     </div>
 	<a id="menu_toggle" href="#"><i id="menu" class="iconfont menu"></i></a>
     <div id="navigation">
-      <ul id="nav">
-	    <?php if($rewrite ==1){?>
-        <li><a href="index.html"><i class="iconfont">&#xe642;</i> 首页</a></li>
-        <li><a href="comment.html">评论</a></li>
-		<?php }else{?>
-        <li><a href="<?php echo $file;?>"><i class="iconfont">&#xe642;</i> 首页</a></li>
-        <li><a href="<?php echo $file;?>?act=plist">评论</a></li>
-		<?php }  
-		 if ($admin ==1) {?>
+      <ul id="nav"> 
+		<?php   
+		echo $webmenu;
+		if ($admin ==1) {?>
         <li><a href="<?php echo $file;?>?act=add" title="发布微博">发布</a></li>	 
 		<li><a href="<?php echo $file;?>?act=set" title="设置微博">设置</a></li>
 		<li><a href="<?php echo $file;?>?act=wid" title="设置边栏">边栏</a></li>

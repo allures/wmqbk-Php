@@ -37,7 +37,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 *,::after,::before{box-sizing: border-box;}
 .box-m{width: 980px;margin:0 auto;position:relative;}
 .clb{clear:both}
-#header{background: #2d6dcc;background-color: rgb(45, 109, 204);width: 100%;margin-bottom: 20px;position: relative;z-index: 100;border-bottom: 38px solid #FFF;height: 88px;}
+#header{background:#2d6dcc;width: 100%;margin-bottom: 20px;position: relative;z-index: 100;border-bottom: 38px solid #FFF;height: 88px;}
 #content{width: 980px;margin: 0 auto;overflow: hidden;padding-bottom: 20px;}
 #main{width: 70%;float: left;overflow: hidden}
 .login{background:#fff;padding:20px;}
@@ -65,6 +65,9 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .excerpt{margin-top: 10px;line-height: 24px}
 .meta{font-size: 12px;clear: both;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;color: #999;border-top: 1px solid #EEE;margin: 20px -30px 0 -30px;padding: 10px 30px 0 30px}
 .post_list .time,#article .time{font-size:12px;color:#999999;float:left}
+.ico{background:#548AF5;padding:1px 5px;font-size:10px;color:#fff;border-radius:3px;}
+.mi{background:#444;}
+.jin{background:#c81623;}
 .navPost{float:right;}
 .navPost a{font-size:12px;}
 .meat_span{margin-right: 15px}
@@ -129,7 +132,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .s_d{margin-bottom:5px;padding:5px 0;}
 .s_e{margin-bottom:5px;}
 .s_e strong{display:block;padding-bottom:5px}
-.input_textarea{width:90%;border:1px #ccc solid;font:14px Verdana, Arial;padding:5px;box-sizing: border-box;}
+.input_textarea{width:100%;border:1px #ccc solid;font:14px Verdana, Arial;padding:5px;box-sizing: border-box;}
 .input_narrow{width:50%;/*height:17px;*/border:1px #ccc solid;font:14px Verdana, Arial;padding:5px;}
 .relog{width:100%;height:54px;}
 .s_h{height:258px;margin-bottom:5px;}
@@ -137,14 +140,10 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .ef{margin-bottom: 5px;}
 .select, #main select{border: 1px #ccc solid;padding: 2px;}
 .btn{cursor: pointer;line-height: 26px;height: 26px;background: #2d6dcc;color: #FFF;padding: 0 16px;text-align: center;border-radius: 0;border: 0;}
-.nicEdit-main img{max-width:80%}
-.scrollCon{width:100%;}
-.scrollCon ul{font-size:0px;}
-.scrollCon ul li{position:relative;list-style:none;width:88px;height:68px;padding:2px;border:2px solid #ccc;display:inline-block;margin-right:5px;cursor:pointer;}
-.scrollCon ul li.pick{border:2px solid #F60;}
-.scrollCon ul li i{position: absolute;right:5px;top:2px;z-index: 10;color: red;}
-.scrollCon img{width:80px;height:60px;vertical-align:middle}
-#log{border-top:none;overflow: hidden auto;height: 300px;}
+#log{height: 300px;}
+#picup{box-sizing: content-box;overflow:hidden;position:relative;line-height:60px;text-align:center;width:90px;height:60px;padding:2px;border:1px solid #ccc;}
+#delpic{display:none;margin:0 2px 2px 2px;cursor:pointer;line-height:18px;z-index:10;position:absolute;bottom:0;left:0;width:90px;height:20px;background:rgba(102,102,102,0.7);color:#fff;}
+#upload-input{cursor:pointer;position:absolute;top:0;bottom:0;left:0;right:0;opacity:0;}
 @media screen and (max-width:980px) {
 #content{width: 96%}
 #header,.box-m{width:100%}
@@ -174,7 +173,7 @@ html{-webkit-text-size-adjust: none}
 .post_list{padding: 0 10px}
 .post_list h2{padding: 5px 0}
 .post_list h2 a{font-size: 20px}
-.excerpt{padding: 10px 0;overflow: hidden;font-size: 12px;line-height: 16px;margin-top: 5px}
+.excerpt{padding: 10px 0;overflow:hidden;line-height:16px;margin-top:5px}
 .excerpt img{width: 90px;height: 66px}
 .text{font-size: 16px}
 .meta{margin: 5px -10px 0 -10px;padding: 5px 10px}
@@ -189,4 +188,6 @@ html{-webkit-text-size-adjust: none}
 #comments{padding: 10px}
 #comments h3{padding: 0 0 10px 10px;margin: 0 -10px}
 .comment{overflow: hidden;padding-left: 5px}
+.comlist:target{padding-top:98px;margin-top:-98px;border-bottom: 1px dashed red;}
+.menu-tip{display:none !important}
 }

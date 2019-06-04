@@ -5,11 +5,11 @@ $des = $webdesc;
 function topic($n){
 	global $db;
 	$str = '';
-    $rs =  $db->getdata("select id,title,sum,num from `Log` order by num desc limit 0,$n");
+    $rs =  $db->getdata("select id,title,sum,num from `Log` where hide=0 order by num desc limit 0,$n");
 	foreach($rs as $v){	
 		if(empty($v['title'])){
 		  $title = mb_substr(strip_tags($v['sum']),0,14,'utf-8');
-		  if(empty($title)) {$title = '#图片分享';}
+		  if(empty($title)) {$title = '#分享';}
 		}else{
 		   $title = $v['title'];
 		}

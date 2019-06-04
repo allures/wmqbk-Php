@@ -140,8 +140,8 @@ class Page {
 	 *
 	 * @param unknown_type $params
 	 */
-	function initialize($params = array()){
-		if(count($params > 0)){
+	function initialize($params = array()){		 
+		if(count($params) > 0){
 			foreach ($params as $k => $v){
 				if(isset($this->$k)){
 					$this->$k = $v;

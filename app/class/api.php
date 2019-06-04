@@ -10,12 +10,13 @@ switch ($c) {
 
 case 'dellog':
 	 chkadm();
-     $data = $db->getdata("select `pics` from `Log` where id=:id", array(
+     $data = $db->getdata("select `pic`,`pics` from `Log` where id=:id", array(
             'id' => $id
      ));
 	 $b =  $db->runsql("delete from `Log` where id=:id",array("id"=>$id));     
-     $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));	
+     $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));
 	 delpic($data[0]['pics']);
+	 delpic($data[0]['pic']);
 	 logmsg($b);
 break;
 
@@ -27,9 +28,9 @@ case 'addpl':
 	   }
 	 }
      $v = $db->getdata("select id from `Log` where id=:id",array('id'=>$id));
-	 if(empty($v)){
-	   logmsg(0,'文章不存在！');
-	 }
+	 if(empty($v) || $v['lock']==1 || $v['hide']==1){
+	   logmsg(0,'评论失败！');
+	 } 
 	 $arr['cid'] = $id;
 	 $arr['pname'] = mb_substr(strip_tags(trim($_POST['pname'])),0,20,'utf-8');
      $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['plog'])),0,250,'utf-8');
@@ -56,7 +57,7 @@ case 'plsave':
 	chkadm();    
 	$arr['id'] = $id;
 	$arr['rcontent'] = $_POST['rlog'];
-	$b =  $db->runsql("update `Pl` set rcontent=:rcontent where id=:id",$arr);
+	$b =  $db->runsql("update `Pl` set rcontent=:rcontent,isn=0 where id=:id",$arr);
 	logmsg($b);
 break;
 
@@ -85,7 +86,7 @@ case 'saveset':
    chkadm(); 
    $arr = $_POST; 
    $_SESSION['set'] = '';
-   $b =  $db->runsql("update `Set` set webuser=:webuser,webtitle=:webtitle,webdesc=:webdesc,plsh=:plsh,rewrite=:rewrite,safecode=:safecode,icp=:icp where id=1",$arr);
+   $b =  $db->runsql("update `Set` set webuser=:webuser,webtitle=:webtitle,webdesc=:webdesc,plsh=:plsh,rewrite=:rewrite,safecode=:safecode,icp=:icp,webmenu=:webmenu where id=1",$arr);
    logmsg($b);
 break;
 
@@ -94,9 +95,9 @@ case 'savewid':
    $arr = $_POST;   
    if($id >0){
 	  $arr['id'] = $id;
-      $b =  $db->runsql("update `Wid` set title=:title,html=:html,ord=:ord where id=:id",$arr);	
+      $b =  $db->runsql("update `Wid` set title=:title,html=:html,type=:type,ord=:ord where id=:id",$arr);	
    }else{	 
-	  $b =  $db->runsql("insert into `Wid`(title,html,ord)values(:title,:html,:ord)",$arr); 	 
+	  $b =  $db->runsql("insert into `Wid`(title,html,type,ord)values(:title,:html,:type,:ord)",$arr); 	 
    }
    logmsg($b);
 break;
@@ -121,34 +122,33 @@ case 'savelog':
 	$arr['pass'] = $_POST['pass'];
 	$arr['pic'] = $_POST['pic'];
     $arr['pics'] = $_POST['pics'];
+	$arr['hide'] = $_POST['hide'];
+	$arr['lock'] = $_POST['lock'];
 	$c = $_POST['c'];	
 	 
 	  if(empty($arr['sum'])){
 		  if(empty($arr['pass'])){
 		      $arr['sum'] = mb_substr(strip_tags($arr['content']),0,100,'utf-8');
+			  if(empty($arr['sum'])){
+			     if(strpos($arr['content'],'<img' === FALSE)){
+					 $arr['sum'] = '#分享';
+				 }else{
+				     $arr['sum'] = '#图片分享';
+				 }
+			  }
 		   }else{
 		      $arr['sum'] = '这是一篇密码日志！';
 		  }
 	    
-	  }
+	  } 
  
-	if(!empty($arr['pic'])){	   
-	   if(strpos($arr['pic'],'/b_')>1){
-	   $Image = ROOT_PATH.$arr['pic'];
-	   $imgInfo = @getimagesize($Image);
-       $saveImage = str_replace('/b_','/s_',$Image);
-	   createImg($Image,$saveImage,$imgInfo,ImgW,ImgH,1);
-       $arr['pic'] = str_replace(ROOT_PATH,'',$saveImage);
-		}	   
-	}
 	if($c=='add'){
     $arr['fm'] = agent();
-	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass)values(:title,:sum,:content,:pic,:pics,:fm,:pass)",$arr);	 
+	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass,hide,lock)values(:title,:sum,:content,:pic,:pics,:fm,:pass,:hide,:lock)",$arr);	 
 	}else{
 		$arr['id'] = $id;
 		$arr['atime'] = $_POST['atime'];
-		//print_r($arr);
-	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pics=:pics,pass=:pass,atime=:atime where id=:id",$arr);
+	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pics=:pics,pass=:pass,atime=:atime,hide=:hide,lock=:lock where id=:id",$arr);
 		if($b==1) $b=$id;
 	}
 	logmsg($b);

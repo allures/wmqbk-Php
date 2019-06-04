@@ -42,16 +42,19 @@ function StopButton(id,s){
 function savelog() { 
 	var tit=$("#tit").val(),
 		sum = $("#sum").val(),
-		log = ndPanel.nicInstances[0].getContent(),
-		pic = $("#pic").val(),
+		log = editor.$txt.html(),
+		pic = upic,
 		pics = pic_arr.join(','),
 		id = $("#id").val(),
 		c = $("#c").val(),
 		pass=$("#pass").val(),
 		atime = $("#atime").val();
+	    hide = $('#hide').prop("checked")?1:0;
+		lock = $('#lock').prop("checked")?1:0;
+		log = log.replace(/<p>[<br>]*<\/p>/g,'')
   if(log =="" && pic =="" ){
     errmsg("写点什么吧！");   
-    $(".nicEdit-main").focus();
+    $("#log").focus();
     return false;
   }
 	$.post("./app/class/api.php?act=savelog&id=" + id, {
@@ -62,6 +65,8 @@ function savelog() {
 		pics: pics,
 		atime:atime,
 		pass:pass,
+	    hide:hide,
+		lock:lock,
 		c: c
 	}, function(data) {
 		if (data.result == '200') {

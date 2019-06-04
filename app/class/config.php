@@ -2,15 +2,18 @@
 error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
+/*密码及标识*/
 $pass = "admin"; //上线前请修改密码！
+define('KEY','WMQBK'); //安装多个时修改
+/*以下配置无需修改*/
 $template = 'qblog'; //模板文件夹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
 define('ImgW',180);
 define('ImgH',120);
 define('wmblog','TRUE');
-define('VER','v1.1');
-$admin = isset($_SESSION['admin'])?$_SESSION['admin']:0;
+define('VER','v1.2');
+$admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 $set = getset();
 $webtitle= $set['webtitle'];
 $webdesc= $set['webdesc'];
@@ -18,6 +21,7 @@ $rewrite = $set['rewrite'];
 $plsh = $set['plsh'];
 $safecode = $set['safecode'];
 $icp = $set['icp'];
+$webmenu = vmenu($set['webmenu']);
 require_once ROOT_PATH.'assets/'.$template.'/theme.php';
 spl_autoload_register('load_plug');
 function load_plug($classname)
@@ -52,7 +56,7 @@ function delpic($pics){
 		$pic_arr = explode(",",$pics);
 		foreach($pic_arr as $pic){
 		   $_pic = str_replace('..','',ROOT_PATH.$pic);
-		   if(strpos($_pic,'/b_')>0){
+		   /*if(strpos($_pic,'/b_')>0){
 		     $b_pic = $_pic;
 			 $s_pic = str_replace("/b_","/s_",$_pic);
 		   }else{
@@ -62,10 +66,10 @@ function delpic($pics){
 		   if(is_file($b_pic))
 		   {
 			@unlink($b_pic);
-		   }	 
-		   if(is_file($s_pic))
+		   }*/	 
+		   if(is_file($_pic))
 		   {
-			@unlink($s_pic);
+			 @unlink($_pic);
 		   }
 		} 
 	}
@@ -89,12 +93,12 @@ echo $admin==1?$str:'';
 
 function getset(){
   $db =new DbHelpClass(); 
-  if(empty($_SESSION['set'])){
+  if(empty($_SESSION[KEY.'set'])){
      $rs = $db->getdata("select * from `Set` where id=1");
-     $set = $rs[0];
-	 $_SESSION['set'] = $set;	 
+     $set = $rs[0];	 
+	 $_SESSION[KEY.'set'] = $set;	 
   }else{
-     $set = $_SESSION['set'];
+     $set = $_SESSION[KEY.'set'];
   }
   return $set;
 }
@@ -116,7 +120,7 @@ function logmsg($b,$msg='操作成功！'){
 }
 
 function chkadm(){
-  if($_SESSION['admin']!=1){
+  if($_SESSION[KEY.'admin']!=1){
 	  logmsg(0,'未登录！');
       exit();
   }
@@ -133,6 +137,11 @@ function vurl($id){
    global $rewrite;
    $url =  $rewrite?'post-'.$id.'.html':self().'?act=pl&id='.$id;
    return $url;
+}
+
+function vmenu($menu){
+	global $rewrite;
+	return $rewrite?str_replace(array('@index','@comment'),array('index.html','comment.html'),$menu):str_replace(array('@index','@comment'),array(self(),self().'?act=plist'),$menu);
 }
 
 function self(){

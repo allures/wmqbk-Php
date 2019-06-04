@@ -10,7 +10,11 @@
 	  <div class="textPost"><a href="<?php echo vurl($v['id']); ?>"><?php echo $v['sum']; ?></a></div>	
 	  </div>	
 	  <div class="meta">
-	  <p class="time"><?php echo timeago($v['atime']);?> 通过<?php echo $v['fm']; ?> <?php if($v['ist']==1){ ?><i style="color:#F60;padding-top:2px" class="iconfont">&#xe618;</i><?php } ?></p>
+	  <p class="time"><?php echo timeago($v['atime']);?> 通过<?php echo $v['fm']; ?> 
+	  <?php if($v['ist']==1){ ?><span class="ico">顶</span><?php } ?>
+	  <?php if($v['hide']==1){ ?><span class="ico mi">私</span><?php } ?>
+	  <?php if($v['lock']==1){ ?><span class="ico jin">禁</span><?php } ?>
+	  </p>
       <p class="navPost"><a href="<?php echo vurl($v['id']);?>"><i class="iconfont">&#xe61e;</i> 评论(<?php echo  $v['num']; ?>)</a> 
 	 
 	<?php  view_admin($v['id'],$v['ist'],0);?>

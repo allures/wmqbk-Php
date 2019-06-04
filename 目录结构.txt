@@ -16,9 +16,7 @@
     │  │  ajax.js  ajax操作js文件
     │  │  jquery.min.js jquery库
     │  │  
-    │  ├─edit 编辑器目录
-    │  │      nicEdit.js
-    │  │      nicEditorIcons.gif
+    │  ├─wangeditor 编辑器目录
     │  │      
     │  └─laydate 日期插件目录
     │                      
