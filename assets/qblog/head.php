@@ -10,6 +10,9 @@
 <?php if($tpl=='post.php'){?>
 <link href="assets/js/wangeditor/css/wangEditor.min.css" rel="stylesheet" type="text/css" />
 <?php }?>
+<?php if($tpl=='view.php'){?>
+<link href="assets/js/highlightjs/dark.css" rel="stylesheet" type="text/css" />
+<?php }?>
 </head>
 <body>
 <div id="wrap"> 
