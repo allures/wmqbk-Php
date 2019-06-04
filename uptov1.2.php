@@ -2,8 +2,8 @@
 header("Content-type: text/html; charset=utf-8");
 require_once 'app/class/config.php';
 if(!isset($_GET['up'])){
- echo '此文件升级v1.1版数据库为v1.2版，使用前请备份好数据库文件。<br />';
- echo '<a href="?up=1">开始升级</a>';
+ echo '此文件升级v1.1版数据库为v1.2版，使用前请备份好网站数据。<br />';
+ echo '升级步骤：<br />1.先备份v1.1数据库文件；<br />2.上传v1.2完整程序覆盖；<br />3.上传v1.1数据库覆盖，运行本程序点击下方【开始升级】即可。<br /><a href="?up=1">开始升级</a>';
  exit();
 }
 $db = new DbHelpClass();
@@ -96,4 +96,4 @@ $sql5 = 'DROP TABLE sqlitestudio_temp_table';
 $db->runsql($sql5);
 $m = '<li><a href="@index">首页</a></li><li><a href="@comment">评论</a></li>';
 $db->runsql("update [Set] set webmenu='$m' where id=1");
-echo '升级完成，请用v1.2版覆盖除数据库以外的文件';
+echo '升级完成。如果一片空白，则数据没有升级成功！';
