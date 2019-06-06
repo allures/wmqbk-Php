@@ -1,4 +1,4 @@
-# 无名微博客PHP版
+# 无名轻博客PHP版
 
 ![输入图片说明](http://demo.semlog.cn/v1.2.jpg "截图_2.jpg")
 
