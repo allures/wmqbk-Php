@@ -95,9 +95,9 @@ case 'savewid':
    $arr = $_POST;   
    if($id >0){
 	  $arr['id'] = $id;
-      $b =  $db->runsql("update `Wid` set title=:title,html=:html,type=:type,ord=:ord where id=:id",$arr);	
+      $b =  $db->runsql("update `Wid` set title=:title,html=:html,ord=:ord where id=:id",$arr);	
    }else{	 
-	  $b =  $db->runsql("insert into `Wid`(title,html,type,ord)values(:title,:html,:type,:ord)",$arr); 	 
+	  $b =  $db->runsql("insert into `Wid`(title,html,ord)values(:title,:html,:ord)",$arr); 	 
    }
    logmsg($b);
 break;

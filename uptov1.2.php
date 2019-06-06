@@ -95,5 +95,5 @@ $db->runsql($sql4);
 $sql5 = 'DROP TABLE sqlitestudio_temp_table';
 $db->runsql($sql5);
 $m = '<li><a href="@index">首页</a></li><li><a href="@comment">评论</a></li>';
-$db->runsql("update [Set] set webmenu='$m' where id=1");
+$db->runsql("update `Set` set webmenu='$m'");
 echo '升级完成。如果一片空白，则数据没有升级成功！';
