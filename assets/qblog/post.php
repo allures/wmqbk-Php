@@ -31,6 +31,7 @@
 <script type="text/javascript" language="javascript" src="assets/js/laydate/laydate.js"></script>
 <?php }?>
 <script>
+<?php if($act=='edit'){echo "laydate.render({elem:'#atime',type:'datetime'});";}?>
 function delpic(e){
    var p = e.attr('src');
    $.post("app/class/api.php?act=delpic", {pic: p}, function(ret){}, 'json');

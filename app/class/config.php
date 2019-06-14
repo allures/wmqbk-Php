@@ -12,7 +12,7 @@ define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
 define('ImgW',180);
 define('ImgH',120);
 define('wmblog','TRUE');
-define('VER','v1.2');
+define('VER','v1.3');
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 $set = getset();
 $webtitle= $set['webtitle'];
@@ -23,15 +23,6 @@ $safecode = $set['safecode'];
 $icp = $set['icp'];
 $webmenu = vmenu($set['webmenu']);
 require_once ROOT_PATH.'assets/'.$template.'/theme.php';
-spl_autoload_register('load_plug');
-function load_plug($classname)
-{
-    $filename = ROOT_PATH."app/plug/".$classname.".php";
-    if (is_file($filename))
-    {
-        include $filename;
-    }
-}
 function mkDirs($path)
 {
 	$array_path = explode("/",$path);
@@ -55,25 +46,16 @@ function delpic($pics){
 	{
 		$pic_arr = explode(",",$pics);
 		foreach($pic_arr as $pic){
+		  if(preg_match('/^assets\/file\/\d{4}\/\d{2}\/[\w_]+?\.(jpg|png|gif)$/',$pic)){		   
 		   $_pic = str_replace('..','',ROOT_PATH.$pic);
-		   /*if(strpos($_pic,'/b_')>0){
-		     $b_pic = $_pic;
-			 $s_pic = str_replace("/b_","/s_",$_pic);
-		   }else{
-		     $s_pic = $_pic;
-             $b_pic = str_replace("/s_","/b_",$_pic);
-		   }	
-		   if(is_file($b_pic))
-		   {
-			@unlink($b_pic);
-		   }*/	 
 		   if(is_file($_pic))
 		   {
 			 @unlink($_pic);
 		   }
+		  }
 		} 
 	}
-}
+} 
 function view_admin($id,$ist,$v=1){
 global $admin,$file;
 $txt = $ist==1?'取消':'置顶';

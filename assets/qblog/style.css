@@ -123,7 +123,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 #codeimg{vertical-align: middle;}
 #footer a{color: #06C}
 #footer a:hover{color: #F60}
-
+#log a{text-decoration:underline;}
 #errmsg{padding-left:5px;color:red}
 .tabtitle{background: #f4f4f4;/*border-bottom: 1px solid #ddd;*//*height: 30px;*/line-height: 30px;padding: 0 10px 0 20px;display: -webkit-box;overflow-x: auto;overflow-y:hidden;white-space: nowrap;-ms-overflow-style: none;overflow: -moz-scrollbars-none;}
 .tabtitle li{cursor: pointer;display:inline-block;padding: 0 15px;}
