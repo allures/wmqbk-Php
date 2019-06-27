@@ -1,4 +1,6 @@
-<?php if(!defined('wmblog'))exit; ?><div id="sidebar"> 
+<?php if(!defined('wmblog'))exit; 
+if ($widget=="1"){
+?><div id="sidebar"> 
      <div class="sidebar">
 	  <?php foreach($wid as $v){?>
       <div class="widget">
@@ -7,6 +9,8 @@
            <ul class="topic"><?php echo topic(10);?> </ul>
 	    <?php }elseif ($v['html']	==='comment'){?>
            <ul class="comment"><?php echo comment(10);?></ul>	 
+        <?php }elseif ($v['html']	==='class'){?>
+           <ul class="comment"><?php echo _class();?></ul>	
 		<?php }else{?>
 		  <ul><?php echo $v['html'];?></ul>
 		<?php } ?>
@@ -14,3 +18,4 @@
 	 <?php } ?>	  
 	 </div>
 </div>
+<?php } ?>	  

@@ -1,8 +1,7 @@
 <?php if(!defined('wmblog'))exit; ?>
 <?php include "head.php";?>
   <div id="content">
-    <div id="main" style="background:#fff;padding:15px;box-sizing:border-box;"> 
-	 
+    <div id="main"<?php if($widget=="0") echo ' class="w100"';?> style="background:#fff;padding:15px;box-sizing:border-box;">	 
    <ul class="tabtitle">
 	  <?php foreach($wid as $v){?><li><?php echo $v['title']; ?></li> <?php } ?>
 	<li>添加边栏</li>
@@ -15,7 +14,7 @@
 		<input type="text" class="input_narrow" name="title" value="<?php echo $v['title']; ?>" maxlength="15" />
 	</div> 
 	<div class="s_h">
-		<strong>代码:</strong>（系统标签支持 comment topic）
+		<strong>代码:</strong>（系统标签支持 comment topic class）
 		<textarea name="html" class="input_textarea"><?php echo $v['html']; ?></textarea>
 	</div>
 	<div class="s_e">

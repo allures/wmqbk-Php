@@ -1,15 +1,15 @@
 <?php if(!defined('wmblog'))exit; ?>
 <?php include "head.php";?>
   <div id="content">
-    <div id="main">         
+    <div id="main"<?php if($widget=="0") echo ' class="w100"';?>>         
 <div id="article">
 <?php if ($v['title']<>"") echo '<h1>'.$title.'</h1>';?>
 <div class="text"><?php  if($v['pass']==""){echo $v['content']; }else { echo '<p style="color:red;">这是一篇密码日志！</p><p><input placeholder="请输入密码..." name="pass" type="password" value="" id="password" class="search-text" /> <button class="search-submit" onclick="ckpass(\''.$v['id'].'\');" />确认</button></p>';}?></div>
-
-<p class="time clb"><?php  echo $v['atime']?> 通过 <?php echo $v['fm']?> </p>
+<p class="time clb"><?php  echo $class[$v['tid']].' '.$v['atime']?> 通过 <?php echo $v['fm'];?> </p>
 <p class="navPost">  
 	<?php  view_admin($v['id'],$v['ist']);?>
 </p></div>  
+<div id="articlenav"><?php echo getprenext($v['id'],'pre');echo getprenext($v['id'],'next');?></div>
    <div id="comments">
    <h3><?php if($v['lock']==1 || $v['hide']==1) {echo '评论已关闭！';} else {echo '共有'.$v['num'].'条评论！'; }?></h3>
         <ol class="comment_list">

@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/config.php");
+require_once("app.php");
 $act = isset($_GET['act']) ? $_GET['act'] : '';
 if( isset($_FILES['picture']) && !empty($_FILES['picture']['name']) )
 {

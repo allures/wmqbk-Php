@@ -24,16 +24,7 @@
 	<a id="menu_toggle" href="#"><i id="menu" class="iconfont menu"></i></a>
     <div id="navigation">
       <ul id="nav"> 
-		<?php   
-		echo $webmenu;
-		if ($admin ==1) {?>
-        <li><a href="<?php echo $file;?>?act=add" title="发布微博">发布</a></li>	 
-		<li><a href="<?php echo $file;?>?act=set" title="设置微博">设置</a></li>
-		<li><a href="<?php echo $file;?>?act=wid" title="设置边栏">边栏</a></li>
-		<li><a href="<?php echo $file;?>?act=logout" title="退出">退出</a></li>
-       <?php }else{ ?>
-        <li><a href="<?php echo $file;?>?act=login" title="登陆到微博">登录</a></li>
-	   <?php } ?>
+		<?php webmenu();?>
       </ul>  
     </div>
       </div>

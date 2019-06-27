@@ -1,7 +1,7 @@
 <?php if(!defined('wmblog'))exit; ?>
 <?php include "head.php";?>
   <div id="content">
-  <div id="main">
+  <div id="main"<?php if($widget=="0") echo ' class="w100"';?>>
      <div id="comments">
 	    <h3>评论列表</h3>
 		 <ol class="comment_list">

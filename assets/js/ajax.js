@@ -1,4 +1,14 @@
-﻿function ckradd(e,f){
+﻿ $.fn._serialize = function () {
+        var da = this.serializeArray();
+        var $elrc = $('input[type=checkbox]', this);
+        $.each($elrc, function() {
+                if ($("input[name='" + this.name + "']:checked").length == 0) {
+                    da.push({name: this.name, value:0});
+				} 
+        });  
+		return jQuery.param(da);
+}
+function ckradd(e,f){
   if($("#"+e+"pname").val()==""){
   errmsg("请输入昵称后再提交");
   $("#"+e+"pname").focus();
@@ -39,54 +49,31 @@ function StopButton(id,s){
 	} 
 }
  
-function savelog() { 
-	var tit=$("#tit").val(),
-		sum = $("#sum").val(),
-		log = editor.$txt.html(),
-		pic = upic,
-		pics = pic_arr.join(','),
-		id = $("#id").val(),
-		c = $("#c").val(),
-		pass=$("#pass").val(),
-		atime = $("#atime").val();
-	    hide = $('#hide').prop("checked")?1:0;
-		lock = $('#lock').prop("checked")?1:0;
-		log = log.replace(/<p>[<br>]*<\/p>/g,'')
+function savelog() {
+   var data = $("#post").serializeArray();
+   var pic = upic,
+	   pics = pic_arr.join(','),
+	   log = editor.$txt.html();
+	   log = log.replace(/<p>[<br>]*<\/p>/g,''),
+	   hide = $('#hide').prop("checked")?1:0,
+	   lock = $('#lock').prop("checked")?1:0;
+  data.push({name: 'pic', value: upic},{name: 'pics', value:pics},{name:'content', value: log},{name:'hide', value: hide},{name:'lock', value: lock});
   if(log =="" && pic =="" ){
     errmsg("写点什么吧！");   
     $("#log").focus();
     return false;
   }
-	$.post("./app/class/api.php?act=savelog&id=" + id, {
-		tit:tit,
-		sum:sum,
-		logs: log,
-		pic: pic,
-		pics: pics,
-		atime:atime,
-		pass:pass,
-	    hide:hide,
-		lock:lock,
-		c: c
-	}, function(data) {
-		if (data.result == '200') {
-			if(c=='add'){
-				$("#tit").val('');
-				$(".nicEdit-main").html('');
-				$("#log").val('');
-			    $("#pic").val('');
-				pic_arr = [];
-                $(".picls").remove();
-			}
-		}
+	$.post("./app/class/ajax.php?act=savelog", $.param(data), function(data) {
 		errmsg(data.message);
-		window.location.href = 'index.php?act=pl&id='+data.id;
+		if (data.result == '200') {		
+		  window.location.href = 'index.php?act=pl&id='+data.id;
+		}
 	}, 'json');
 
 }
 function saveset(){
-    var data = $("#formset").serialize();
-    $.post("./app/class/api.php?act=saveset",data , function(data) {
+    var data = $("#formset")._serialize();
+    $.post("./app/class/ajax.php?act=saveset",data , function(data) {
 		errmsg(data.message)
 	}, 'json');
 
@@ -99,7 +86,7 @@ function savewid(id){
 	   errmsg("标题不能为空！","#formwid"+id+" ");
 	   return false
    }; 
-   $.post("./app/class/api.php?act=savewid&id="+id,data , function(data) {
+   $.post("./app/class/ajax.php?act=savewid&id="+id,data , function(data) {
 		errmsg(data.message,"#formwid"+id+" ")
 	}, 'json');
  
@@ -107,30 +94,30 @@ function savewid(id){
 function delwid(id){
 	if(confirm('确定要删除吗?'))
 	{	
-		$.get("./app/class/api.php?act=delwid&id="+id,function(data){if(data.result=='200'){ window.location.reload();}else{alert(data.message);}},'json');
+		$.get("./app/class/ajax.php?act=delwid&id="+id,function(data){if(data.result=='200'){ window.location.reload();}else{alert(data.message);}},'json');
      }
  }
 
 function dellog(id,v){
 	if(confirm('确定要删除吗?'))
 	{	
-		$.get("./app/class/api.php?act=dellog&id="+id,function(data){if(data.result=='200'){ if(v=='1'){location.href="./";}else{$("#log-"+id).fadeOut();} }else{alert(data.message);}},'json');
+		$.get("./app/class/ajax.php?act=dellog&id="+id,function(data){if(data.result=='200'){ if(v=='1'){location.href="./";}else{$("#log-"+id).fadeOut();} }else{alert(data.message);}},'json');
      }
 }
 function delpl(id,pid){
 	if(confirm('确定要删除吗?'))
 	{	
-		$.get("./app/class/api.php?act=delpl&id="+id+"&cid="+pid,function(data){if(data.result=='200'){$("#Com-"+id).fadeOut();}else{alert(data.message);}},'json');
+		$.get("./app/class/ajax.php?act=delpl&id="+id+"&cid="+pid,function(data){if(data.result=='200'){$("#Com-"+id).fadeOut();}else{alert(data.message);}},'json');
      }
 }
 function shpl(id){
-		$.get("./app/class/api.php?act=shpl&id="+id,function(data){if(data.result=='200'){$("#sh-"+id).fadeOut();}else{alert(data.message);}},'json');
+		$.get("./app/class/ajax.php?act=shpl&id="+id,function(data){if(data.result=='200'){$("#sh-"+id).fadeOut();}else{alert(data.message);}},'json');
 }
 function zdlog(id){
 	var zdobj=$("#zd-"+id);
 	var xval=0;
 	if(zdobj.text()=='置顶'){xval=1};
-	$.get("./app/class/api.php?act=zdlog&id="+id+"&d="+xval,function(data){if(data.result=='200'){zdobj.text(data.message);}else{alert(data.message);}},'json');
+	$.get("./app/class/ajax.php?act=zdlog&id="+id+"&d="+xval,function(data){if(data.result=='200'){zdobj.text(data.message);}else{alert(data.message);}},'json');
 }
 function addpl(id,f){	
 	var ck = ckradd('',f);
@@ -139,7 +126,7 @@ function addpl(id,f){
 		return ck;
 	}
 	var npname = $("#pname").val(),nplog = $("#plog").val(),nscode=$("#safecode").val();
-	 $.post("./app/class/api.php?act=addpl&id="+id, {pname:npname, plog:nplog,scode:nscode}, function(data) {	 
+	 $.post("./app/class/ajax.php?act=addpl&id="+id, {pname:npname, plog:nplog,scode:nscode}, function(data) {	 
      if(data.result == '200')
 	 {
 		 $(".comment_list").append(data.message);$("#plog").val('');$("#safecode").val('');reloadcode();StopButton('add',9);
@@ -166,7 +153,7 @@ function plsave(id,pid,x){
 		$("#rlog").focus();
 		return false;
 	}
-	$.post("./app/class/api.php?act=plsave&id=" + pid + "&cid=" + pid, {
+	$.post("./app/class/ajax.php?act=plsave&id=" + pid + "&cid=" + pid, {
 		rlog: rlog
 	}, function(data) {
         capl();
@@ -185,7 +172,7 @@ function plsave(id,pid,x){
 function ckpass(id){	
 	var ps= $("#password").val();
 	if (ps!=''){
-	$.post("./app/class/api.php?act=ckpass&id="+id, {ps:ps}, function(data) {if(data.result=='200'){ $("#article .text").html(data.message)}else{alert(data.message);}},'json');}else{
+	$.post("./app/class/ajax.php?act=ckpass&id="+id, {ps:ps}, function(data) {if(data.result=='200'){ $("#article .text").html(data.message)}else{alert(data.message);}},'json');}else{
 	$("#password").focus();
 	}	
 }
@@ -196,17 +183,17 @@ function DotRoll(elm) {
 
 function reloadcode(){$('#codeimg').attr('src','./app/class/codes.php?t='+Math.random());}
 
-function getFileName(o){
-    var pos=o.lastIndexOf("\\");
-    return o.substring(pos+1);  
-}
-
 $(document).ready(function () {
-$('#menu_toggle').on("click","i",function(e){
+
+$('.textPost').on("click",function(e){	
+   window.location.href = $(this).data('url');
+});
+
+$('#menu_toggle').on("click",function(e){
    e.preventDefault();
-   $(this).toggleClass('close');
+   $('#menu').toggleClass('close');
    $('#nav').slideToggle();
-})
+});
  
 $(window).resize(function(){
 	 var w = $(window).width();
@@ -214,7 +201,7 @@ $(window).resize(function(){
        $('#menu').removeClass('close');
 	   $('#nav').hide();
 	 } 
-});				
+});
 
 var url = String(window.location);
 var last = url.charAt(url.length - 1);

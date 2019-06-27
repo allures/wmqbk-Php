@@ -1,6 +1,6 @@
 <?php
 $tit = '首页';
-$key = '无名轻博客,轻博客,php博客,无名微博,微博';
+$key = $webkey;
 $des = $webdesc;
 function topic($n){
 	global $db;
@@ -34,6 +34,23 @@ function comment($n){
        $str .='</li>';
 	}
    return $str;
+}
+
+function getprenext($id,$pn){
+   global $db;
+   if($pn=='pre'){
+      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id <$id ORDER BY id DESC LIMIT 1"); 
+	  $t = '上一篇';
+   }else{
+      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id >$id ORDER BY id ASC LIMIT 1"); 
+	  $t = '下一篇';
+   }
+   //print_r($rs);
+   if(empty($rs)){
+     return '';
+   }else{
+     return '<a class="'.$pn.'" href="'. vurl($rs[0]['id']) .'">'.($rs[0]['title']==''?$t:$rs[0]['title']).'</a>';
+   }
 }
 
 function pl_str($id,$pname,$pcontent,$ptime){ 

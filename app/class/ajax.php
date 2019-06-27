@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'app.php';
 $c = isset($_GET['act'])?$_GET['act']:'';
 $d = isset($_GET['d'])?$_GET['d']:'';
 $p = isset($_GET['p'])?intval($_GET['p']):1;
@@ -85,8 +85,15 @@ break;
 case 'saveset':
    chkadm(); 
    $arr = $_POST; 
-   $_SESSION[KEY.'set'] = '';
-   $b =  $db->runsql("update `Set` set webuser=:webuser,webtitle=:webtitle,webdesc=:webdesc,plsh=:plsh,rewrite=:rewrite,safecode=:safecode,icp=:icp,webmenu=:webmenu where id=1",$arr);
+   $_SESSION[KEY.'set'] = '';   
+   if(empty($arr['webpass'])){
+	   unset($arr['webpass']);
+   }else{
+      $arr['webpass'] = md5(md5(KEY.$arr['webpass']));
+   }
+   $sql = arr_sql('Set','update',$arr);
+   $arr['id'] = 1;
+   $b =  $db->runsql($sql,$arr);   
    logmsg($b);
 break;
 
@@ -116,17 +123,12 @@ case 'delpic':
 break;
 case 'savelog':
 	chkadm();  
-	$arr['content'] = $_POST['logs'];	
-	$arr['sum'] = strip_tags($_POST['sum']);	
-	$arr['title'] = $_POST['tit'];
-	$arr['pass'] = $_POST['pass'];
-	$arr['pic'] = $_POST['pic'];
-    $arr['pics'] = $_POST['pics'];
-	$arr['hide'] = $_POST['hide'];
-	$arr['lock'] = $_POST['lock'];
-	$c = $_POST['c'];	
-	 
-	  if(empty($arr['sum'])){
+     $arr = $_POST;  
+	 $c = $arr['c'];
+	 $id = intval($arr['id']);
+	 unset($arr['c']);
+	 unset($arr['id']);
+	 if(empty($arr['sum'])){
 		  if(empty($arr['pass'])){
 		      $arr['sum'] = mb_substr(strip_tags($arr['content']),0,100,'utf-8');
 			  if(empty($arr['sum'])){
@@ -138,18 +140,17 @@ case 'savelog':
 			  }
 		   }else{
 		      $arr['sum'] = '这是一篇密码日志！';
-		  }
-	    
-	  } 
- 
+		  }	    
+	 }  
 	if($c=='add'){
-    $arr['fm'] = agent();
-	$b =  $db->runsql("insert into `Log`(title,sum,content,pic,pics,fm,pass,hide,lock)values(:title,:sum,:content,:pic,:pics,:fm,:pass,:hide,:lock)",$arr);	 
+		$arr['fm'] = agent();
+		$sql = arr_sql('Log','insert',$arr);
+		$b =  $db->runsql($sql,$arr);
 	}else{
-		$arr['id'] = $id;
-		$arr['atime'] = $_POST['atime'];
-	    $b =  $db->runsql("update `Log` set title=:title,sum=:sum,content=:content,pic=:pic,pics=:pics,pass=:pass,atime=:atime,hide=:hide,lock=:lock where id=:id",$arr);
-		if($b==1) $b=$id;
+		$sql = arr_sql('Log','update',$arr);
+        $arr['id'] = $id;
+	    $b =  $db->runsql($sql,$arr);
+		if($b==1) $b=$arr['id'];
 	}
 	logmsg($b);
 break;
@@ -167,3 +168,19 @@ default:
    logmsg(0);
 }
 //end switch
+
+
+function arr_sql($tab,$run,$arr){
+   //unset($arr['id']); 
+   $k =array_keys($arr);
+   if($run == 'insert'){	  
+    $sql = "insert into `{$tab}`(".join(',',$k).")values(:".join(',:',$k).")";
+   }else{ 
+	//$k =array_keys($arr);
+    foreach($k as $v){
+	   $s[] =  $v.'=:'.$v;
+	}
+    $sql = "update `{$tab}` set ".join(',',$s)." where id=:id";
+   }     
+  return $sql;
+}

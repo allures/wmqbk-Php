@@ -57,12 +57,14 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .search-form{right:0;padding:6px 0;}
 .search-text{float: left;border-right: 0;padding: 0 6px;height: 26px;line-height: 26px;border-radius: 0;}
 .search-submit{cursor: pointer;float: left;line-height: 26px;height: 26px;background: #2d6dcc;color: #FFF;padding: 0 16px;text-align: center;border-radius: 0;border: 0;}
+.class{background:#fff;padding:5px 10px;margin-bottom:10px;font-weight:700;color:#666}
 .post_list{margin-bottom: 20px;padding: 15px 20px 10px 20px;background-color: #FFF;box-shadow: 0 1px 2px #CCC;overflow: hidden}
 .post_list h2{overflow: hidden;text-overflow: ellipsis}
 .post_list h2 a{color: #333;font-size: 18px;overflow: hidden;white-space: nowrap}
 .post_list h2 a:hover{color: #2d6dcc;text-decoration: none}
 .info{color: #999;}
-.excerpt{margin-top: 10px;line-height: 24px}
+.excerpt{margin-top: 10px;line-height: 24px;}
+.textPost{cursor: pointer;}
 .meta{font-size: 12px;clear: both;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;color: #999;border-top: 1px solid #EEE;margin: 20px -30px 0 -30px;padding: 10px 30px 0 30px}
 .post_list .time,#article .time{font-size:12px;color:#999999;float:left}
 .ico{background:#548AF5;padding:1px 5px;font-size:10px;color:#fff;border-radius:3px;}
@@ -92,6 +94,11 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .text a{color: #049}
 .text a:hover{text-decoration: underline}
 .text img,.text iframe{max-width: 100%}
+#articlenav{background:#fff;padding:5px 10px;overflow: hidden;margin-bottom:10px;}
+#articlenav .pre{float:left}
+#articlenav .pre:before{font-family: "iconfont";font-size: 14px;font-style: normal;content: '\e602';}
+#articlenav .next{float:right}
+#articlenav .next:after{font-family: "iconfont";font-size: 14px;font-style: normal;content: '\e603';}
 .sidebar{box-shadow: 0 1px 2px #CCC;overflow: hidden;}
 .widget{background-color: #FFF;margin-bottom: 10px;color: #666;/*padding: 10px 10px 0 10px;*/overflow: hidden}
 .widget a{color: #666}
@@ -104,7 +111,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .post_link a{font-size: 12px;color: #999}
 .post_link .prev{float: left}
 .post_link .next{float: right}
-#comments{margin-bottom: 20px;padding: 20px 30px 10px 30px;background-color: #FFF;box-shadow: 0 1px 2px 0 #CCC;overflow: hidden}
+#comments{clear:both;margin-bottom: 20px;padding: 20px 30px 10px 30px;background-color: #FFF;box-shadow: 0 1px 2px 0 #CCC;overflow: hidden}
 #comments h3{border-bottom: 1px dashed #CCC;padding: 0 0 10px 0;}
 .comment_list{margin-bottom: 30px}
 .comment_list li{border-bottom: 1px dashed #e5e5e5;margin: 0;padding: 10px 0}
@@ -144,6 +151,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 #picup{box-sizing: content-box;overflow:hidden;position:relative;line-height:60px;text-align:center;width:90px;height:60px;padding:2px;border:1px solid #ccc;}
 #delpic{display:none;margin:0 2px 2px 2px;cursor:pointer;line-height:18px;z-index:10;position:absolute;bottom:0;left:0;width:90px;height:20px;background:rgba(102,102,102,0.7);color:#fff;}
 #upload-input{cursor:pointer;position:absolute;top:0;bottom:0;left:0;right:0;opacity:0;}
+.w100{width:100% !important}
 @media screen and (max-width:980px) {
 #content{width: 96%}
 #header,.box-m{width:100%}
@@ -169,7 +177,7 @@ html{-webkit-text-size-adjust: none}
 .search-form{width:100%;padding:6px;}
 .search-form .search-text{width:calc(100% - 60px);}
 #content{width: 100%;}
-#main{width: 94%;float: none;overflow: hidden;margin: 98px auto 10px auto;}
+#main{width:100%;float: none;overflow: hidden;margin: 98px auto 10px auto;}
 .post_list{padding: 0 10px}
 .post_list h2{padding: 5px 0}
 .post_list h2 a{font-size: 20px}
