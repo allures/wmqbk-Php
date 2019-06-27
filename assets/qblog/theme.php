@@ -37,12 +37,13 @@ function comment($n){
 }
 
 function getprenext($id,$pn){
-   global $db;
+   global $db,$admin;
+   $where =  $admin?'':'and hide=0';
    if($pn=='pre'){
-      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id <$id ORDER BY id DESC LIMIT 1"); 
+      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id <$id $where ORDER BY id DESC LIMIT 1"); 
 	  $t = '上一篇';
    }else{
-      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id >$id ORDER BY id ASC LIMIT 1"); 
+      $rs =  $db->getdata("SELECT id,title FROM `log` WHERE id >$id $where ORDER BY id ASC LIMIT 1"); 
 	  $t = '下一篇';
    }
    //print_r($rs);

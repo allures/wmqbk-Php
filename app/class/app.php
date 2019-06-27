@@ -83,7 +83,8 @@ function webmenu(){
 }
 
 function _class(){
-    global $class;
+    global $class;	 
+	if(empty($class[0])) return '';
 	$i = 0;
 	$str = '';
     foreach($class as $v){	

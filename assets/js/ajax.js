@@ -1,4 +1,4 @@
-﻿ $.fn._serialize = function () {
+ $.fn._serialize = function () {
         var da = this.serializeArray();
         var $elrc = $('input[type=checkbox]', this);
         $.each($elrc, function() {
@@ -25,8 +25,9 @@ function ckradd(e,f){
       errmsg("请正确输入右侧答案！");$("#safecode").focus();return false; 
  } 
  return true
-}
-function errmsg(s,el=''){ 
+} 
+function errmsg(s,el){ 
+   if(!arguments[1]) el = "";
    $(el+'#errmsg').show().text(s).fadeOut(2000);
 }
 function ckse(){
