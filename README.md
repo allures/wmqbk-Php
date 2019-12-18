@@ -1,6 +1,6 @@
 # 无名轻博客PHP版
 
-![输入图片说明](https://www.4jax.net/images/img1.jpg "截图_2.jpg")
+![输入图片说明](https://www.4jax.net/images/img1.jpg "截图")
 
 #### 介绍
 
