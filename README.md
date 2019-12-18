@@ -1,6 +1,6 @@
 # 无名轻博客PHP版
 
-![输入图片说明](http://demo.semlog.cn/v1.2.jpg "截图_2.jpg")
+![输入图片说明](https://www.4jax.net/images/img1.jpg "截图_2.jpg")
 
 #### 介绍
 
@@ -28,6 +28,5 @@
 #### 官网及演示
 
 官方网站：https://www.4jax.net/log
-演示网站：http://demo.semlog.cn/
 
 欢迎体验使用提交BUG及建议。
