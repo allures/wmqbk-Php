@@ -16,7 +16,7 @@
 	  <?php if($v['hide']==1){ ?><span class="ico mi">私</span><?php } ?>
 	  <?php if($v['lock']==1){ ?><span class="ico jin">禁</span><?php } ?>
 	  </p>
-      <p class="navPost"><a href="<?php echo vurl($v['id']);?>"><i class="iconfont">&#xe61e;</i> 评论(<?php echo  $v['num']; ?>)</a> 
+      <p class="navPost"><i class="iconfont">&#xe643;</i> 浏览(<?php echo $v['pv']; ?>) <a href="<?php echo vurl($v['id']);?>"><i class="iconfont">&#xe61e;</i> 评论(<?php echo  $v['num']; ?>)</a> 
 	 
 	<?php  view_admin($v['id'],$v['ist'],0);?>
 </p></div></div> 

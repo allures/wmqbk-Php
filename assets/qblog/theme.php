@@ -52,11 +52,11 @@ function getprenext($id,$pn){
    }else{
      return '<a class="'.$pn.'" href="'. vurl($rs[0]['id']) .'">'.($rs[0]['title']==''?$t:$rs[0]['title']).'</a>';
    }
-}
+} 
 
-function pl_str($id,$pname,$pcontent,$ptime){ 
-  $pl_tpl = '<li class="comlist" id="Com-%s"><div id="Ctext-%s" class="comment"><div class="comment_meta"><cite>%s</cite><span class="time">%s</span></div> <p>%s</p></div></li>';
-  return sprintf($pl_tpl,$id,$id,$pname,$ptime,$pcontent);
+function pl_str($id,$arr){  
+  $pl_tpl = '<li class="comlist" id="Com-%s"><div id="Ctext-%s" class="comment"><div class="comment_meta"><cite><a target="_blank" href="%s">%s</a></cite><span class="time">%s</span></div> <p>%s</p></div></li>';
+  return sprintf($pl_tpl,$id,$id,target($arr['purl']),$arr['pname'],$arr['ptime'],$arr['pcontent']);
 }
 
  function timeago($ptime) {

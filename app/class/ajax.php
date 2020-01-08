@@ -28,22 +28,26 @@ case 'addpl':
 	   }
 	 }
      $v = $db->getdata("select id from `Log` where id=:id",array('id'=>$id));
-	 if(empty($v) || $v['lock']==1 || $v['hide']==1){
+	 if(empty($v[0]) || $v[0]['lock']==1 || $v[0]['hide']==1){
 	   logmsg(0,'评论失败！');
 	 } 
 	 $arr['cid'] = $id;
+	 $arr['purl'] = mb_substr(strip_tags(trim($_POST['purl'])),0,50,'utf-8');
 	 $arr['pname'] = mb_substr(strip_tags(trim($_POST['pname'])),0,20,'utf-8');
+	 if(empty($arr['pname'])){$arr['pname'] ='匿名网友';}
      $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['plog'])),0,250,'utf-8');
 	 if(empty($arr['pname']) or empty($arr['pcontent'])) logmsg(0,'昵称/内容为空！');
 	 $arr['isn'] = $set['plsh'];
 	 if($admin !=1){
 	    if($arr['pname'] == $set['webuser']){ $arr['pname']='网友';}
 	 }
-	 $b =  $db->runsql("insert into `Pl` (cid,pname,pcontent,isn)values(:cid,:pname,:pcontent,:isn)",$arr);
+	 $b =  $db->runsql("insert into `Pl` (cid,pname,pcontent,isn,purl)values(:cid,:pname,:pcontent,:isn,:purl)",$arr);
 	 if($b){$db->runsql("update `Log` set num=num+1 where id=:id",array("id"=>$arr['cid']));}
 	 $arr['ptime'] = date('Y-m-d H:i:s');
-	 $str = pl_str($b,$arr['pname'],$arr['pcontent'],$arr['ptime']);
+	 $str = pl_str($b,$arr); 
      setcookie('pname',$arr['pname'],time()+3600*24*30,'/');
+	 setcookie('purl',$arr['purl'],time()+3600*24*30,'/');
+	 wxmsg($arr);
 	 logmsg($b,$str);
 break;
 
@@ -70,8 +74,7 @@ case 'ckpass':
 	logmsg(1,$rs[0]['content']);
 	}else{
 	logmsg(0,'密码错误！');
-	}
-	
+	}	
 break;
 
 case 'delpl':
@@ -89,6 +92,7 @@ case 'saveset':
    if(empty($arr['webpass'])){
 	   unset($arr['webpass']);
    }else{
+	  //$arr['webpass'] = 'admin';
       $arr['webpass'] = md5(md5(KEY.$arr['webpass']));
    }
    $sql = arr_sql('Set','update',$arr);
@@ -121,6 +125,24 @@ case 'delpic':
 	$pic = $_POST['pic'];
     delpic($pic);
 break;
+
+case 'thum':
+	if(!empty($d)){	   
+	   if(strpos($d,'/b_')>1){
+	   $Image = ROOT_PATH.$d;
+	   $imgInfo = @getimagesize($Image);
+       $saveImage = str_replace('/b_','/s_',$Image);
+	   createImg($Image,$saveImage,$imgInfo,ImgW,ImgH,1);
+       $thum = str_replace(ROOT_PATH,'',$saveImage);
+	    logmsg(1,$thum);
+	   }else{
+	     logmsg(0,'图片地址错误！');
+	   }	    
+	}else{
+	     logmsg(0,'图片地址错误！');
+	   }
+break;
+
 case 'savelog':
 	chkadm();  
      $arr = $_POST;  
@@ -128,20 +150,20 @@ case 'savelog':
 	 $id = intval($arr['id']);
 	 unset($arr['c']);
 	 unset($arr['id']);
-	 if(empty($arr['sum'])){
-		  if(empty($arr['pass'])){
+	 if(empty($arr['pass'])){
+			if(empty($arr['sum'])){
 		      $arr['sum'] = mb_substr(strip_tags($arr['content']),0,100,'utf-8');
 			  if(empty($arr['sum'])){
-			     if(strpos($arr['content'],'<img' === FALSE)){
+			     if(strpos($arr['content'],'<img') === false){
 					 $arr['sum'] = '#分享';
 				 }else{
 				     $arr['sum'] = '#图片分享';
 				 }
 			  }
+			   }
 		   }else{
 		      $arr['sum'] = '这是一篇密码日志！';
-		  }	    
-	 }  
+	}	  
 	if($c=='add'){
 		$arr['fm'] = agent();
 		$sql = arr_sql('Log','insert',$arr);
@@ -163,13 +185,11 @@ case 'zdlog':
       $msg = $d==0?'置顶':'取消';
 	  logmsg($b,$msg);
 break;
-
+ 
 default:
    logmsg(0);
 }
 //end switch
-
-
 function arr_sql($tab,$run,$arr){
    //unset($arr['id']); 
    $k =array_keys($arr);

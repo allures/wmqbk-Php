@@ -22,9 +22,13 @@
 		<strong>微博关键词:</strong>
 		<input type="text" class="input_narrow" name="webkey" value="<?php echo $set['webkey'];?>" maxlength="30" />
 	</div> 
-	<div class="s_e">
-		<strong>微博说明:</strong> 
+		<div class="s_e">
+		<strong>微博描述:</strong> 
 		<textarea name="webdesc" class="input_textarea" onkeydown="if(event.keyCode==13){return false;}"><?php echo $set['webdesc'];?></textarea>
+	</div> 
+	<div class="s_e">
+		<strong>微博座右铭:</strong> 
+		<input type="text" class="input_narrow" name="motto" value="<?php echo $set['motto'];?>" maxlength="50" />		 
 	</div> 
 	<div class="s_e">
 		<strong>导航菜单:</strong> 
@@ -37,6 +41,10 @@
 	<div class="s_e">
 		<strong>备案号:</strong>
 		<input type="text" class="input_narrow" name="icp" value="<?php echo $set['icp'];?>" maxlength="30" />
+	</div> 
+	 <div class="s_e">
+		<strong>评论微信通知Token:<span class="tips">(前往<a href="https://g.fpx.ink/" target="_blank">https://g.fpx.ink/</a>获取)</span></strong>
+		<input type="text" class="input_narrow" name="token" value="<?php echo $set['token'];?>" maxlength="32" />
 	</div> 
 	<div class="s_e">
         <strong>其它设置:</strong>

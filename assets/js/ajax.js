@@ -9,11 +9,11 @@
 		return jQuery.param(da);
 }
 function ckradd(e,f){
-  if($("#"+e+"pname").val()==""){
+  /*if($("#"+e+"pname").val()==""){
   errmsg("请输入昵称后再提交");
   $("#"+e+"pname").focus();
   return false;
-  }
+  }*/
   var val=$("#"+e+"plog").val();
   if(val.length<5 || val.length>200){
 	errmsg("评论内容必须在5-200字之间，请修改后再提交！");
@@ -126,12 +126,12 @@ function addpl(id,f){
 	{
 		return ck;
 	}
-	var npname = $("#pname").val(),nplog = $("#plog").val(),nscode=$("#safecode").val();
-	 $.post("./app/class/ajax.php?act=addpl&id="+id, {pname:npname, plog:nplog,scode:nscode}, function(data) {	 
+	var npname = $("#pname").val(),npurl = $("#purl").val(),nplog = $("#plog").val(),nscode=$("#safecode").val();
+	 $.post("./app/class/ajax.php?act=addpl&id="+id, {pname:npname, purl:npurl, plog:nplog,scode:nscode}, function(data) {	 
      if(data.result == '200')
-	 {
+	 {		 
 		 $(".comment_list").append(data.message);$("#plog").val('');$("#safecode").val('');reloadcode();StopButton('add',9);
-		 errmsg('')
+		 errmsg('');	 	 
 	 }else{
 	     errmsg(data.message);$("#safecode").val('');reloadcode();$("#safecode").focus();
 	 }											 

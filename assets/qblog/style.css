@@ -139,6 +139,7 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 .s_d{margin-bottom:5px;padding:5px 0;}
 .s_e{margin-bottom:5px;}
 .s_e strong{display:block;padding-bottom:5px}
+.s_e .tips{font-size:12px;color:#666;font-weight:normal;}
 .input_textarea{width:100%;border:1px #ccc solid;font:14px Verdana, Arial;padding:5px;box-sizing: border-box;}
 .input_narrow{width:50%;/*height:17px;*/border:1px #ccc solid;font:14px Verdana, Arial;padding:5px;}
 .relog{width:100%;height:54px;}
@@ -198,4 +199,18 @@ html{-webkit-text-size-adjust: none}
 .comment{overflow: hidden;padding-left: 5px}
 .comlist:target{padding-top:98px;margin-top:-98px;border-bottom: 1px dashed red;}
 .menu-tip{display:none !important}
+}
+/*视频自适应代码*/
+.wm-video {
+        position:relative;
+        padding-bottom:56.25% !important;
+        height:0;
+        overflow:hidden;
+}
+.wm-video iframe{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
 }

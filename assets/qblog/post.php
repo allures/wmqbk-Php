@@ -38,6 +38,8 @@
 <script type="text/javascript" language="javascript" src="assets/js/laydate/laydate.js"></script>
 <?php }?>
 <script>
+var apic = 0;
+var act = 'thum';
 <?php if($act=='edit'){echo "laydate.render({elem:'#atime',type:'datetime'});";}?>
 function delpic(e){
    var p = e.attr('src');
@@ -55,8 +57,17 @@ function delpic(e){
         //var originalName = editor.uploadImgOriginalName || '';  
         var obj = JSON.parse(resultText);
 		if(obj.error == 0){
-		pic_arr.push(obj.url);
-        editor.command(null, 'insertHtml', '<img src="' + obj.url + '" style="max-width:100%;"/>');
+		  pic_arr.push(obj.url);	
+		 if (upic=='' && apic==0)
+		 {
+            $.get("./app/class/ajax.php?act=thum&d="+obj.url,function(data){if(data.result=='200'){ 			
+			    upic = data.message;
+                $("#pic").attr("src",upic).show();
+			    $('#delpic').show();
+			}else{alert(data.message);}},'json');
+		 }
+		 apic++;
+         editor.command(null, 'insertHtml', '<img src="' + obj.url + '" style="max-width:100%;"/>');
 		}else{
 		 alert(obj.message);
 		}

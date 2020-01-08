@@ -29,7 +29,7 @@
     </div>
       </div>
 	  <div class="other box-m">
-	   <div class="desc"><?php echo $webdesc;?></div>
+	   <div class="desc"><?php echo $motto;?></div>
 	   <form method="get" class="search-form" action="<?php echo $file;?>"> <input class="search-text" name="s" autocomplete="off" placeholder="输入关键词搜索..." required="required" type="text" value="<?php echo $s;?>"> <button class="search-submit" alt="搜索" type="submit">搜索</button></form>
 	   </div>   
 </div>

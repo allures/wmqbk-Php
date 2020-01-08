@@ -2,16 +2,17 @@
 error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
-define('KEY','WMQBK'); 
+define('KEY','WMQBK3_58699a'); 
 $template = 'qblog'; //模板文件夹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
+define('DB',ROOT_PATH.'app/db/log3.db');
 define('ImgW',180);
 define('ImgH',120);
 define('wmblog','TRUE');
-define('VER','v2.0');
+define('VER','v3.0');
+//if(!defined("INSTALL")){@header("Location:install.php");exit();}
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
-//$_SESSION[KEY.'set'] = '';
 $set = getset();
 $webpass= $set['webpass'];
 $webtitle= $set['webtitle'];
@@ -24,6 +25,8 @@ $icp = $set['icp'];
 $widget = $set['widget'];
 $class = explode(',',$set['webclass']); 
 $webmenu = vmenu($set['webmenu']);
+$motto = $set['motto'];
+$token = $set['token'];
 require_once ROOT_PATH.'assets/'.$template.'/theme.php';
 function login($file,$ps){
 	   global $webpass;
@@ -171,6 +174,54 @@ function vmenu($menu){
 	return $rewrite?str_replace(array('@index','@comment'),array('index.html','comment.html'),$menu):str_replace(array('@index','@comment'),array(self(),self().'?act=plist'),$menu);
 }
 
+function target($v,$file){  
+  	$pattern="#(http|https)://(.*\.)?.*\..*#i";
+	if(preg_match($pattern,$v)){ 
+		return ' target="_blank" href="'.$file.'?act=target&s='.rawurlencode($v).'"'; 
+	}else{ 
+		return ''; 
+	}  
+}
+
+function pv($id){
+    if(isset($_SESSION['pv_'.$id])){	   
+	}else{
+	   $_SESSION['pv_'.$id] = 1;
+	   $db = new DbHelpClass(); 
+	   $db->runsql("update `Log` set pv=pv+1 where id=:id",array("id"=>$id));
+	}
+}
+
+function wxmsg($arr){
+  global $token;
+  if(!empty($token)){
+  $pst['t'] = $token;
+  $pst['n'] = $arr['pname'];
+  $pst['p'] = $arr['pcontent'];
+  $pst['r'] = '?act=pl&id='.$arr['cid'];
+  $postdata = http_build_query($pst);
+  http('https://g.fpx.ink/send/', $postdata);
+  }
+}
+
+function http($url, $rawData=false)
+ {
+ 
+         $ch = curl_init();
+         curl_setopt($ch, CURLOPT_URL, $url);
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
+         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
+		 curl_setopt($ch,CURLOPT_HEADER,0);
+		 if($rawData){
+           curl_setopt($ch, CURLOPT_POST, 1);
+           curl_setopt($ch, CURLOPT_POSTFIELDS, $rawData);
+		 }
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
+ }
+
 function self(){
     $self = $_SERVER['PHP_SELF']; 
     $php_self=substr($self,strrpos($self,'/')+1);
@@ -264,10 +315,9 @@ class DbHelpClass
         private $ret;
         
         function __construct()
-        {
-            $path=ROOT_PATH."app/db/log.db";  
+        {              
 			try{
-			   $this->conn = new PDO('sqlite:'.$path); 
+			   $this->conn = new PDO('sqlite:'.DB); 
 			 }			
 			catch(Exception $errinfo){
 				die ("PDO Connection faild.(可能空间不支持pdo_sqlite，详细错误信息：)".$errinfo);

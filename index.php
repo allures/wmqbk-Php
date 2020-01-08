@@ -66,15 +66,16 @@ switch ($act) {
 		if($v['hide']=="1" && $admin==0){@header("http/1.1 404 not found");@header("status: 404 not found");exit('404 not found');}
         $title = $v['title'] == '' ? mb_substr(strip_tags($v['sum']) , 0, 15, 'utf-8') : $v['title'];
         $sum = str_replace('"','',strip_tags($v['sum']));
-		if($v['lock']=="0"){
+		//if($v['lock']=="0"){
         $list = $db->getdata("select * from `Pl` where cid=:id", array(
             'id' => $id
         ));
-		}
+		//}
 		$tit = strip_tags($title);
 		$key = $v['key'];
 		$des = str_replace("\n","",$sum);
         $tpl = 'view.php';
+		pv($id);
         break;
 
     case 'plist':
@@ -97,8 +98,10 @@ switch ($act) {
 		$key = $webkey.',评论,博客评论,评论列表';
         $tpl = 'plist.php';
         break;
-
-    default:
+    case 'target':
+        $tpl = 'target.php'; 
+		break;
+    default:		
 		$key = $webkey;
         if (empty($s)) {
 			if($tid===''){
