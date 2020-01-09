@@ -127,7 +127,7 @@ function addpl(id,f){
 		return ck;
 	}
 	var npname = $("#pname").val(),npurl = $("#purl").val(),nplog = $("#plog").val(),nscode=$("#safecode").val();
-	 $.post("./app/class/ajax.php?act=addpl&id="+id, {pname:npname, purl:npurl, plog:nplog,scode:nscode}, function(data) {	 
+	 $.post("./app/class/ajax.php?act=addpl&id="+id, {pname:npname, purl:npurl, plog:nplog,scode:nscode,r:window.location.href}, function(data) {	 
      if(data.result == '200')
 	 {		 
 		 $(".comment_list").append(data.message);$("#plog").val('');$("#safecode").val('');reloadcode();StopButton('add',9);

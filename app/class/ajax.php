@@ -34,6 +34,7 @@ case 'addpl':
 	 $arr['cid'] = $id;
 	 $arr['purl'] = mb_substr(strip_tags(trim($_POST['purl'])),0,50,'utf-8');
 	 $arr['pname'] = mb_substr(strip_tags(trim($_POST['pname'])),0,20,'utf-8');
+	 $r = $_POST['r'];
 	 if(empty($arr['pname'])){$arr['pname'] ='匿名网友';}
      $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['plog'])),0,250,'utf-8');
 	 if(empty($arr['pname']) or empty($arr['pcontent'])) logmsg(0,'昵称/内容为空！');
@@ -47,7 +48,7 @@ case 'addpl':
 	 $str = pl_str($b,$arr); 
      setcookie('pname',$arr['pname'],time()+3600*24*30,'/');
 	 setcookie('purl',$arr['purl'],time()+3600*24*30,'/');
-	 wxmsg($arr);
+	 wxmsg($arr,$r);
 	 logmsg($b,$str);
 break;
 

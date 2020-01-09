@@ -2,16 +2,16 @@
 error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
-define('KEY','WMQBK3_58699a'); 
+define('KEY','WMQBK3_795b50'); 
 $template = 'qblog'; //模板文件夹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
-define('DB',ROOT_PATH.'app/db/log3.db');
+define('DB',ROOT_PATH.'app/db/41f6320ad75c.db');
 define('ImgW',180);
 define('ImgH',120);
 define('wmblog','TRUE');
 define('VER','v3.0');
-//if(!defined("INSTALL")){@header("Location:install.php");exit();}
+define('INSTALL','TRUE');
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 $set = getset();
 $webpass= $set['webpass'];
@@ -192,13 +192,13 @@ function pv($id){
 	}
 }
 
-function wxmsg($arr){
+function wxmsg($arr,$r){
   global $token;
   if(!empty($token)){
   $pst['t'] = $token;
   $pst['n'] = $arr['pname'];
   $pst['p'] = $arr['pcontent'];
-  $pst['r'] = '?act=pl&id='.$arr['cid'];
+  $pst['r'] = $r;
   $postdata = http_build_query($pst);
   http('https://g.fpx.ink/send/', $postdata);
   }
