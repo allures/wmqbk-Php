@@ -15,6 +15,9 @@
 <body>
 <div style="padding:150px 0 0 0;line-height:30px;width:480px;margin:0 auto">
 <?php
+if (file_exists('app/db/log.db')) { 
+   @header('Location:uptov3.php');  
+}
 echo '<p class="red">注意：如果从V2.0升级请先运行<a href="uptov3.php">升级程序</a>后再安装</p><p>检测结果：</p>';
 $odb = 'app/db/log3.db';
 $cfg = 'app/class/app.php';

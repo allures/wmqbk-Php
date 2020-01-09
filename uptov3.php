@@ -16,16 +16,25 @@
 <div style="padding:150px 0 0 0;line-height:30px;width:480px;margin:0 auto">
 <?php
 define('INSTALL','TRUE');
-require_once 'app/class/app.php';
-if(!isset($_GET['up'])){
- echo '此文件升级v2.0版数据库为v3版，请备份好网站数据并真阅读升级步骤！！！<br />';
- echo '升级步骤：<br />1.先备份v2.0数据库文件为log3.db,保留assets/file目录其余全部删除；<br />2.上传v3完整程序覆盖；<br />3.上传v2.0数据库覆盖log3.db，运行本程序点击下方【开始升级】即可。<br /><a href="?up=1">开始升级</a>';
- exit();
+echo '<p>此文件升级v2.0版数据库为v3版，请备份好网站数据并真阅读升级步骤！！！<br />';
+ echo '升级步骤：<br />1.把v2.0数据库命名为log.db(如果你没更名忽略)<br />2.上传V3程序覆盖，运行本程序点击下方【开始升级】即可。<br /><a href="?up=1">开始升级</a></p>';
+if(!isset($_GET['up'])){ 
+   exit();
 }
-if (file_exists('app/db/log3.db')) {  
-$db = new DbHelpClass('app/db/log3.db');
+if (file_exists('app/db/log.db')) { 
+   @unlink ('app/db/log3.db');
+   echo '删除V3版本数据库<br />';
+   rename('app/db/log.db','app/db/log3.db');
+   echo '更名V2版本数据库为log3.db<br />';
+   echo '开始升级...<br />';
 }else{
- exit('app/db/log3.db文件丢失！');
+   exit('V2.0数据库(app/db/log.db)文件丢失！');
+}
+require_once 'app/class/app.php';
+if (file_exists('app/db/log3.db')) {  
+  $db = new DbHelpClass('app/db/log3.db');
+}else{
+  exit('app/db/log3.db文件丢失！');
 }
 $sql1 = 'CREATE TABLE sqlitestudio_temp_table AS SELECT * FROM Log';
 $db->runsql($sql1);
@@ -105,7 +114,7 @@ $sql3 = 'CREATE TABLE [Set] (
     safecode INT (1),
     icp      VARCHAR (20),
     widget   INT (1)       DEFAULT (1),
-    motto    VARCHAR (100),
+    motto    VARCHAR (255),
     token    CHAR (32) 
 )';
 $db->runsql($sql3);
@@ -184,7 +193,7 @@ $db->runsql($sql5);
 $_SESSION[KEY.'set'] = '';
 //$m = '<li><a href="@index">首页</a></li><li><a href="@comment">评论</a></li>';
 //$db->runsql("update `Set` set webmenu='$m'");
-echo '升级完成！ 请先运行<a href="install.php">安装程序</a>';
+echo '升级完成！ 请运行<a href="install.php">安装程序</a>';
 @unlink ('uptov3.php');
 ?>
 </div>

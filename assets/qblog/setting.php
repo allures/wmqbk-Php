@@ -4,6 +4,7 @@
     <div id="main"<?php if($widget=="0") echo ' class="w100"';?> style="background:#fff;padding:15px;box-sizing:border-box;">
 	<ul class="tabtitle">
 	 <li class="on">博客设置</li>  
+	 <li onclick="upCache()">更新缓存</li>
    </ul>
     <form id="formset" style="clear:both;margin:10px 0 0 10px;">
 	<div class="s_e">
@@ -28,7 +29,7 @@
 	</div> 
 	<div class="s_e">
 		<strong>微博座右铭:</strong> 
-		<input type="text" class="input_narrow" name="motto" value="<?php echo $set['motto'];?>" maxlength="50" />		 
+		<textarea name="motto" class="input_textarea" onkeydown="if(event.keyCode==13){return false;}"><?php echo $set['motto'];?></textarea>		 	 
 	</div> 
 	<div class="s_e">
 		<strong>导航菜单:</strong> 

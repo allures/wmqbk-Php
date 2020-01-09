@@ -186,7 +186,10 @@ case 'zdlog':
       $msg = $d==0?'置顶':'取消';
 	  logmsg($b,$msg);
 break;
- 
+case 'upcache':
+	$_SESSION[KEY.'set'] = '';
+    logmsg(1,'更新完成，确定后刷新页面');
+	break;
 default:
    logmsg(0);
 }

@@ -49,7 +49,9 @@ function StopButton(id,s){
 	    $("#"+id).removeAttr("disabled");
 	} 
 }
- 
+ function upCache(){
+   $.get("./app/class/ajax.php?act=upcache",function(data){alert(data.message);window.location.reload();},'json');
+}
 function savelog() {
    var data = $("#post").serializeArray();
    var pic = upic,
