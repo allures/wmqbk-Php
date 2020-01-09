@@ -2,16 +2,16 @@
 error_reporting(0);
 session_start();
 date_default_timezone_set('PRC');
-define('KEY','WMQBK3_795b50'); 
+define('KEY','WMQBK3'); 
 $template = 'qblog'; //模板文件夹
 define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
 define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
-define('DB',ROOT_PATH.'app/db/41f6320ad75c.db');
+define('DB',ROOT_PATH.'app/db/log3.db');
 define('ImgW',180);
 define('ImgH',120);
 define('wmblog','TRUE');
 define('VER','v3.0');
-define('INSTALL','TRUE');
+if(!defined("INSTALL")){@header("Location:install.php");exit();}
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 $set = getset();
 $webpass= $set['webpass'];
