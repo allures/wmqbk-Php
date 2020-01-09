@@ -15,6 +15,7 @@
 <body>
 <div style="padding:150px 0 0 0;line-height:30px;width:480px;margin:0 auto">
 <?php
+define('INSTALL','TRUE');
 require_once 'app/class/app.php';
 if(!isset($_GET['up'])){
  echo '此文件升级v2.0版数据库为v3版，请备份好网站数据并真阅读升级步骤！！！<br />';
