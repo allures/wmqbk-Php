@@ -1,4 +1,4 @@
-<?php if(!defined('wmblog'))exit; ?>
+<?php if(!defined('WMBLOG'))exit; ?>
 <?php include ("head.php");?>
   <div id="content">
     <div id="main" class="login<?php if($widget=="0") echo ' w100';?>"> 

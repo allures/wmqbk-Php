@@ -1,4 +1,4 @@
-<?php if(!defined('wmblog'))exit; 
+<?php if(!defined('WMBLOG'))exit; 
 if ($widget=="1"){
 ?><div id="sidebar"> 
      <div class="sidebar">

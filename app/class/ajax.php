@@ -5,24 +5,22 @@ $d = isset($_GET['d'])?$_GET['d']:'';
 $p = isset($_GET['p'])?intval($_GET['p']):1;
 $id = isset($_REQUEST['id'])?intval($_REQUEST['id']):0;
 $db = new DbHelpClass();
-
 switch ($c) {
-
 case 'dellog':
 	 chkadm();
-     $data = $db->getdata("select `pic`,`pics` from `Log` where id=:id", array(
+     $v = $db->getdata("select `pic`,`pics` from `Log` where id=:id", array(
             'id' => $id
      ));
 	 $b =  $db->runsql("delete from `Log` where id=:id",array("id"=>$id));     
      $b =  $db->runsql("delete from `Pl` where cid=:id",array("id"=>$id));
-	 delpic($data[0]['pics']);
-	 delpic($data[0]['pic']);
+	 delpic($v[0]['pics']);
+	 delpic($v[0]['pic']);
 	 logmsg($b);
 break;
 
 case 'addpl': 	 
 	 if($set['safecode'] ==1){
-	   $code = $_POST['scode'];
+	   $code = $_POST['pcode'];
 	   if($code!=$_SESSION['code']){
 	      logmsg(0,'验证码错误！');
 	   }
@@ -34,35 +32,50 @@ case 'addpl':
 	 $arr['cid'] = $id;
 	 $arr['purl'] = mb_substr(strip_tags(trim($_POST['purl'])),0,50,'utf-8');
 	 $arr['pname'] = mb_substr(strip_tags(trim($_POST['pname'])),0,20,'utf-8');
-	 $r = $_POST['r'];
+	 $arr['pmail'] = mb_substr(strip_tags(trim($_POST['pmail'])),0,30,'utf-8');
 	 if(empty($arr['pname'])){$arr['pname'] ='匿名网友';}
-     $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['plog'])),0,250,'utf-8');
+     $arr['pcontent'] = mb_substr(strip_tags(trim($_POST['pcontent'])),0,250,'utf-8');
 	 if(empty($arr['pname']) or empty($arr['pcontent'])) logmsg(0,'昵称/内容为空！');
 	 $arr['isn'] = $set['plsh'];
 	 if($admin !=1){
 	    if($arr['pname'] == $set['webuser']){ $arr['pname']='网友';}
 	 }
-	 $b =  $db->runsql("insert into `Pl` (cid,pname,pcontent,isn,purl)values(:cid,:pname,:pcontent,:isn,:purl)",$arr);
+	 $b =  $db->runsql("insert into `Pl` (cid,pname,pmail,pcontent,isn,purl)values(:cid,:pname,:pmail,:pcontent,:isn,:purl)",$arr);
 	 if($b){$db->runsql("update `Log` set num=num+1 where id=:id",array("id"=>$arr['cid']));}
 	 $arr['ptime'] = date('Y-m-d H:i:s');
 	 $str = pl_str($b,$arr); 
      setcookie('pname',$arr['pname'],time()+3600*24*30,'/');
+	 setcookie('pmail',$arr['pmail'],time()+3600*24*30,'/');
 	 setcookie('purl',$arr['purl'],time()+3600*24*30,'/');
-	 wxmsg($arr,$r);
+	 $_SESSION[KEY.'add'] = $arr;
 	 logmsg($b,$str);
 break;
-
+case 'pltz':
+	 if(empty($_SESSION[KEY.'add'])){	
+        logmsg(0,'非法请求！'); 
+	 }else{
+		$arr = $_SESSION[KEY.'add'];
+		unset($_SESSION[KEY.'add']);
+	    $arr['r'] = $_POST['r'];
+		if(empty($arr['rcontent'])){
+		  run_hook('addpl',$arr);
+		}else{
+		  $arr['pmail'] = $_POST['pmail'];	
+		  run_hook('plsave',$arr);
+		}		
+	 }	 
+	 break;
 case 'shpl':
 	chkadm();
     $b = $db->runsql("update `Pl` set isn=0 where id=:id",array("id"=>$id));
 	logmsg($b);
 break;
-
 case 'plsave':
 	chkadm();    
 	$arr['id'] = $id;
-	$arr['rcontent'] = $_POST['rlog'];
+	$arr['rcontent'] = $_POST['rcontent'];
 	$b =  $db->runsql("update `Pl` set rcontent=:rcontent,isn=0 where id=:id",$arr);
+	$_SESSION[KEY.'add'] = $arr;
 	logmsg($b);
 break;
 
@@ -70,11 +83,10 @@ case 'ckpass':
 	$ps = isset($_POST['ps'])?$_POST['ps']:'';     
 	$rs =  $db->getdata("select content,pass from `Log` where id=:id",array('id'=>$id));
 	$_ps = $rs[0]['pass'];
-	//print_r($rs);
 	if($_ps==$ps){
-	logmsg(1,$rs[0]['content']);
+	  logmsg(1,$rs[0]['content']);
 	}else{
-	logmsg(0,'密码错误！');
+	  logmsg(0,'密码错误！');
 	}	
 break;
 
@@ -93,7 +105,6 @@ case 'saveset':
    if(empty($arr['webpass'])){
 	   unset($arr['webpass']);
    }else{
-	  //$arr['webpass'] = 'admin';
       $arr['webpass'] = md5(md5(KEY.$arr['webpass']));
    }
    $sql = arr_sql('Set','update',$arr);
@@ -117,10 +128,13 @@ break;
 case 'delwid':
 	chkadm(); 
 	if($id>4){
-     $b =  $db->runsql("delete from `Wid` where id=:id",array('id'=>$id));
-     logmsg($b);
+      $b =  $db->runsql("delete from `Wid` where id=:id",array('id'=>$id));
+      logmsg(1);
+	}else{
+	  logmsg(0,'系统侧栏不能删除！');
 	}
 break;
+
 case 'delpic':
 	chkadm();
 	$pic = $_POST['pic'];
@@ -128,6 +142,7 @@ case 'delpic':
 break;
 
 case 'thum':
+	chkadm();
 	if(!empty($d)){	   
 	   if(strpos($d,'/b_')>1){
 	   $Image = ROOT_PATH.$d;
@@ -145,7 +160,7 @@ case 'thum':
 break;
 
 case 'savelog':
-	chkadm();  
+	 chkadm();  
      $arr = $_POST;  
 	 $c = $arr['c'];
 	 $id = intval($arr['id']);
@@ -173,7 +188,10 @@ case 'savelog':
 		$sql = arr_sql('Log','update',$arr);
         $arr['id'] = $id;
 	    $b =  $db->runsql($sql,$arr);
-		if($b==1) $b=$arr['id'];
+		if($b==1) {
+			$db->runsql("update `Pl` set `hide`=:hide where `cid`=:cid",array("hide"=>$arr['hide'],"cid"=>$id));
+			$b=$arr['id'];
+		}
 	}
 	logmsg($b);
 break;
@@ -187,24 +205,81 @@ case 'zdlog':
 	  logmsg($b,$msg);
 break;
 case 'upcache':
-	$_SESSION[KEY.'set'] = '';
-    logmsg(1,'更新完成，确定后刷新页面');
+	chkadm();
+	unset($_SESSION[KEY.'set']);
+	unset($_SESSION[KEY.'hooks']);
+    $db->runsql("VACUUM");
+    logmsg(1,'更新完成，请刷新页面！');
+	break;
+case 'aplug':
+	chkadm();
+    $f = 'plug/'.str_replace('..','',$d);	 
+	if(is_file($f)) {		 
+      require_once $f;
+	  $func = str_replace('.php','',$d).'_init';
+      if(function_exists($func)){
+		 $init =  $func();
+         $arr['init']  = serialize($init);
+		 if(empty($init['error'])){
+		 $arr['title'] = $init['title'];
+         $arr['hook'] = $init['func'];
+		 $sql = arr_sql('Plug','insert',$arr);
+		 $b = $db->runsql($sql,$arr);
+		 unset($_SESSION[KEY.'hooks']);
+		 logmsg($b);
+		 }else{
+		   logmsg(0,$init['error']);
+		 }
+      }
+	}
+	else{
+	  logmsg(0,'安装失败！');
+	}
+	break;
+case 'eplug':
+	chkadm();
+    $app_hooks = get_hooks();
+    $cfg = $app_hooks[$id]['cfg'];
+	$str = '<form id="eplug'.$id.'">';
+	$i = 0;
+	foreach($cfg as $k=>$v){
+      $str .= '<div class="s_e"><strong>'.$v.':</strong><input name="args[]" value="'.($k==='password'?'':$app_hooks[$id]['args'][$i]).'" class="input_narrow w100" type="text" placeholder="'.$v.'" /></div>';
+	  $i++;
+	}
+	$str .= '<div class="s_s"><button class="btn" onclick="splug('.$id.')" type="button">保存</button> <button class="btn" onclick="layer.closeAll()" type="button">取消</button></div></form>'; 
+	logmsg(1,$str);
+	break;
+case 'splug':
+	  chkadm();
+	  $arr['id'] = $id;
+	  $args = $_POST['args'];
+	  foreach($args as $v){
+	     if(empty($v)){
+		    logmsg(0,'请输入完整后提交');
+		 }
+	  }
+      $arr['args'] = serialize($args);
+      $b = $db->runsql("update `Plug` set args=:args where id=:id",$arr); 
+	  unset($_SESSION[KEY.'hooks']);
+	  logmsg($b);	
+	break;
+case 'kgplug':
+	  chkadm();
+	  $arr['id'] = $id;
+      $arr['lock'] = intval($d);
+      $b = $db->runsql("update `Plug` set lock=:lock where id=:id",$arr);
+      $msg = $d==0?'开启':'关闭';
+	  unset($_SESSION[KEY.'hooks']);
+	  logmsg($b,$msg);	
+	break;
+case 'dplug':
+	chkadm();
+    $b =  $db->runsql("delete from `Plug` where id=:id",array('id'=>$id));	
+	unset($_SESSION[KEY.'hooks'][$id]);
+    logmsg($b);
 	break;
 default:
    logmsg(0);
 }
 //end switch
-function arr_sql($tab,$run,$arr){
-   //unset($arr['id']); 
-   $k =array_keys($arr);
-   if($run == 'insert'){	  
-    $sql = "insert into `{$tab}`(".join(',',$k).")values(:".join(',:',$k).")";
-   }else{ 
-	//$k =array_keys($arr);
-    foreach($k as $v){
-	   $s[] =  $v.'=:'.$v;
-	}
-    $sql = "update `{$tab}` set ".join(',',$s)." where id=:id";
-   }     
-  return $sql;
-}
+

@@ -1,5 +1,7 @@
 <?php
 require_once("app.php");
+$app_hooks = array();
+$db = new DbHelpClass();
 $act = isset($_GET['act']) ? $_GET['act'] : '';
 if( isset($_FILES['picture']) && !empty($_FILES['picture']['name']) )
 {
@@ -9,7 +11,7 @@ if( isset($_FILES['picture']) && !empty($_FILES['picture']['name']) )
 	}
 	else
 	{
-       //if($_FILES['picture']['size'] > 0‬)
+        
        if($_FILES['picture']['size'] > 5242880 )
 		{
  
@@ -52,10 +54,13 @@ if( isset($_FILES['picture']) && !empty($_FILES['picture']['name']) )
 					if($act == 'thum'){
 					    createImg($saveImage,$saveImage,$imgInfo,ImgW,ImgH,1);
 					}else{
-					if( $imgInfo[0] > 560 || $imgInfo[1] > 560 )
+					if( $imgInfo[0] > $set['width'] || $imgInfo[1] > $set['width'] )
 					{
-						createImg($saveImage,$saveImage,$imgInfo,560,560);
+						createImg($saveImage,$saveImage,$imgInfo,$set['width'],$set['width']);
+						
 					}
+					  //echo $saveImage;
+					  run_hook('upload',array('img'=>$saveImage));
 					}
 					$resImage = str_replace(ROOT_PATH,'',$saveImage);
 					upmsg(0,'',$resImage);

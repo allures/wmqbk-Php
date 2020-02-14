@@ -126,43 +126,6 @@ border-top: 1px solid #d8d8d8;
 .actions .link-button + .link-button {
 margin-left: 30px;
 }
-.tip {
-position: relative;
-display: none;
-margin-top: 30px;
-padding-top: 18px;
-color: #999;
-text-align: left;
-background: #f7f7f7;
-border-top: 1px solid #d8d8d8;
-opacity: 0;
-transition: opacity .2s ease-out;
-}
-.tip.is-visible {
-opacity: 1;
-}
-.tip:after, .tip:before {
-position: absolute;
-bottom: 100%;
-right: 5em;
-content: " ";
-height: 0;
-width: 0;
-border: solid transparent;
-pointer-events: none;
-}
-.tip:after {
-margin-right: -6px;
-border-color: rgba(247,247,247,0);
-border-bottom-color: #f7f7f7;
-border-width: 6px;
-}
-.tip:before {
-margin-right: -7px;
-border-color: rgba(216,216,216,0);
-border-bottom-color: #d2d2d2;
-border-width: 7px;
-}
 </style>
 </head>
 <body>

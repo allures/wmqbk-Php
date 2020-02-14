@@ -13,15 +13,16 @@ function topic($n){
 		}else{
 		   $title = $v['title'];
 		}
-	  $str .= '<li><a href="'. vurl($v['id']) .'">'.$title.'</a> <i class="iconfont">&#xe654;</i> '.$v['num'].'</li>';
+	  $str .= '<li><a href="'. vurl($v['id']) .'">'.$title.'</a> <i class="iconfont icon-comm"></i> '.$v['num'].'</li>';
 	}
    return $str;
 }
 
 function comment($n){
-  	global $db,$template;
+  	global $db,$template,$admin;
 	$str = '';
-    $rs =  $db->getdata("select id,cid,pname,pcontent,rcontent,isn from `Pl` order by id desc limit 0,$n");
+	$where = $admin==1?'':'where hide=0';
+    $rs =  $db->getdata("select id,cid,pname,pcontent,rcontent,isn from `Pl` $where order by id desc limit 0,$n");
 	foreach($rs as $v){	
 		if($v['isn'] == 1){
 		  $pcontent = '评论审核中';
@@ -30,7 +31,7 @@ function comment($n){
 		}
 	  $str .= '<li><a href="'. vurl($v['cid']) .'#Com-'.$v['id'].'"><strong>'.$v['pname'].'</strong> : '.$pcontent.'</a>';
 
-	  if(!empty($v['rcontent'])) {$str .= ' <i class="iconfont" style="color:#F60;font-size:11px">&#xe654;</i>';}
+	  if(!empty($v['rcontent'])) {$str .= ' <i class="iconfont icon-reply"></i>';}
        $str .='</li>';
 	}
    return $str;
@@ -54,9 +55,10 @@ function getprenext($id,$pn){
    }
 } 
 
-function pl_str($id,$arr){  
-  $pl_tpl = '<li class="comlist" id="Com-%s"><div id="Ctext-%s" class="comment"><div class="comment_meta"><cite><a target="_blank" href="%s">%s</a></cite><span class="time">%s</span></div> <p>%s</p></div></li>';
-  return sprintf($pl_tpl,$id,$id,target($arr['purl']),$arr['pname'],$arr['ptime'],$arr['pcontent']);
+function pl_str($id,$arr){
+  global $file;
+  $pl_tpl = '<li class="comlist" id="Com-%s"><div id="Ctext-%s" class="comment"><div class="comment_meta"><cite><a%s>%s</a></cite><span class="time">%s</span></div> <p>%s</p></div></li>';
+  return sprintf($pl_tpl,$id,$id,target($arr['purl'],$file),$arr['pname'],$arr['ptime'],$arr['pcontent']);
 }
 
  function timeago($ptime) {

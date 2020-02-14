@@ -1,4 +1,4 @@
-<?php if(!defined('wmblog'))exit; ?>
+<?php if(!defined('WMBLOG'))exit; ?>
 <?php include "head.php";?>
   <div id="content">
     <div id="main"<?php if($widget=="0") echo ' class="w100"';?> style="background:#fff;padding:15px;box-sizing:border-box;">	 
@@ -52,16 +52,5 @@
   </div>
   </div>
 <?php include ("foot.php");?>
-<script language="javascript" type="text/javascript">
-$(document).ready(function () {
-$('.tabtitle li:first').addClass('on');
- $('.tabcontent').eq(0).show(200);
-$('.tabtitle li').click(function () {
-  var index = $(this).index();
-  $(this).addClass('on').siblings('li').removeClass('on');
-  $('.tabcontent').eq(index).show(200).siblings('.tabcontent').hide();
-}); 
-})
-</script>
 </body>
 </html>

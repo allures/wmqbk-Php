@@ -1,18 +1,8 @@
 <?php
-error_reporting(0);
-session_start();
-date_default_timezone_set('PRC');
-define('KEY','WMQBK3'); 
-$template = 'qblog'; //模板文件夹
-define('BASE_PATH',str_replace('\\','/',dirname(__FILE__))."/");
-define('ROOT_PATH',str_replace('app/class/','',BASE_PATH));
-define('DB',ROOT_PATH.'app/db/log3.db');
-define('ImgW',180);
-define('ImgH',120);
-define('wmblog','TRUE');
-define('VER','v3.0');
-if(!defined("INSTALL")){@header("Location:install.php");exit();}
+require_once 'config.php';
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
+define('ADMIN',$admin);
+define('VER','4.0.1');
 $set = getset();
 $webpass= $set['webpass'];
 $webtitle= $set['webtitle'];
@@ -20,14 +10,12 @@ $webkey= $set['webkey'];
 $webdesc= $set['webdesc'];
 $rewrite = $set['rewrite'];
 $plsh = $set['plsh'];
-$safecode = $set['safecode'];
-$icp = $set['icp'];
+$safecode = $set['safecode']; 
 $widget = $set['widget'];
-$class = explode(',',$set['webclass']); 
+$class = gcls($set['webclass']); 
 $webmenu = vmenu($set['webmenu']);
 $motto = $set['motto'];
-$token = $set['token'];
-require_once ROOT_PATH.'assets/'.$template.'/theme.php';
+require_once ROOT_PATH.'assets/'.TEMPLATE.'/theme.php';
 function login($file,$ps){
 	   global $webpass;
        if (md5(md5(KEY.$ps)) === $webpass) {
@@ -71,6 +59,15 @@ function delpic($pics){
 		} 
 	}
 } 
+
+function gcls($str){
+   if(empty($str)){
+	   return '';
+   }else{
+       return explode(',',$str);
+   }
+}
+
 function webmenu(){
   $menu = array('add'=>'发布','set'=>'设置','wid'=>'边栏','logout'=>'退出');
   global $webmenu,$admin,$file,$widget; 
@@ -101,13 +98,13 @@ function view_admin($id,$ist,$v=1){
 global $admin,$file;
 $txt = $ist==1?'取消':'置顶';
 $str = "<a id=\"zd-{$id}\" href=\"javascript:void(0)\" onclick=\"zdlog('{$id}')\">{$txt}</a>&nbsp;<a href=\"{$file}?act=edit&id={$id}\" title=\"编辑微博\">编辑</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"dellog('{$id}','1')\">删除</a>"; 
-$def = $v == 1?"<a href=\"JavaScript:history.back();\">返回</a>&nbsp; <a href=\"JavaScript:DotRoll('pl')\">我要评论</a>":"";
+$def = $v == 1?"<a href=\"JavaScript:history.back();\">返回</a>&nbsp; <a href=\"JavaScript:DotRoll('#formpl')\">我要评论</a>":"";
 echo $admin==1?$str:$def;
 }
 
-function pl_admin($id,$cid,$isn){
+function pl_admin($id,$cid,$isn,$pmail){
 global $admin;
-$str = "<a href=\"javascript:void(0)\" onclick=\"repl('{$id}','{$cid}')\" title=\"回复评论\">回复</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"delpl('{$id}','{$cid}')\" class=\"item\">删除</a>";
+$str = "<a href=\"javascript:void(0)\" onclick=\"repl('{$id}','{$cid}','{$pmail}')\" title=\"回复评论\">回复</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"delpl('{$id}','{$cid}')\" class=\"item\">删除</a>";
 if($isn==1){
 $str .= "&nbsp;<a id=\"sh-{$id}\" href=\"javascript:void(0)\" onclick=\"shpl('{$id}')\" class=\"item\">审核</a>";
 }
@@ -115,7 +112,7 @@ echo $admin==1?$str:'';
 }
 
 function getset(){
-  $db =new DbHelpClass();   
+  $db = new DbHelpClass();   
   if(empty($_SESSION[KEY.'set'])){
      $rs = $db->getdata("select * from `Set` where id=1");
      $set = $rs[0];	 
@@ -192,36 +189,6 @@ function pv($id){
 	}
 }
 
-function wxmsg($arr,$r){
-  global $token;
-  if(!empty($token)){
-  $pst['t'] = $token;
-  $pst['n'] = $arr['pname'];
-  $pst['p'] = $arr['pcontent'];
-  $pst['r'] = $r;
-  $postdata = http_build_query($pst);
-  http('https://g.fpx.ink/send/', $postdata);
-  }
-}
-
-function http($url, $rawData=false)
- {
- 
-         $ch = curl_init();
-         curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
-         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
-		 curl_setopt($ch,CURLOPT_HEADER,0);
-		 if($rawData){
-           curl_setopt($ch, CURLOPT_POST, 1);
-           curl_setopt($ch, CURLOPT_POSTFIELDS, $rawData);
-		 }
-        $output = curl_exec($ch);
-        curl_close($ch);
-        return $output;
- }
-
 function self(){
     $self = $_SERVER['PHP_SELF']; 
     $php_self=substr($self,strrpos($self,'/')+1);
@@ -240,6 +207,42 @@ function agent(){
   }else{
 	  return '网页';  
   } 
+}
+
+function get_hooks(){
+  $db = new DbHelpClass();   
+  if(empty($_SESSION[KEY.'hooks'])){
+     $rs = $db->getdata("select * from `Plug`");
+     foreach($rs as $v){
+     $arr_plug = unserialize($v['init']);
+     $arr_plug['args'] = unserialize($v['args']);
+     $arr_plug['lock'] = $v['lock'];
+     $app_hooks[$v['id']] =  $arr_plug;	 
+     }	
+     $_SESSION[KEY.'hooks'] = $app_hooks;
+	 return $app_hooks;
+  }else{
+     return $_SESSION[KEY.'hooks'];
+  } 
+}
+
+function run_hook($act,$arr) {
+	$app_hooks = get_hooks();	
+	foreach($app_hooks as $hook) {
+	if($hook['lock']==1) continue;
+	$arr_hook = explode(',',$hook['act']);   
+	if(in_array($act,$arr_hook)) {
+	$file = 'plug/'.$hook['file'];
+	if(file_exists($file)) {
+		require_once $file;	 
+		$arr['act'] = $act;
+        $arr['args'] = $hook['args'];
+		call_user_func($hook['func'].'_run',$arr);
+	}else {		
+		return false;
+	}	 
+		}
+	}
 }
 
 function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=false)
@@ -299,7 +302,7 @@ function createImg($oldImg,$newImg,$imgInfo,$maxWidth=200,$maxHeight=200,$cut=fa
 
 	imagecopyresampled($image_p, $image, 0, 0, $cw , $ch , $maxWidth, $maxHeight, $imgInfo[0], $imgInfo[1]);
 
-	imagejpeg($image_p, $newImg,100);
+	imagejpeg($image_p, $newImg);
 
 	imagedestroy($image_p);
 
@@ -369,3 +372,17 @@ class DbHelpClass
 			}
         }
     }
+function arr_sql($tab,$run,$arr){
+   //unset($arr['id']); 
+   $k =array_keys($arr);
+   if($run == 'insert'){	  
+    $sql = "insert into `{$tab}`(".join(',',$k).")values(:".join(',:',$k).")";
+   }else{ 
+	//$k =array_keys($arr);
+    foreach($k as $v){
+	   $s[] =  $v.'=:'.$v;
+	}
+    $sql = "update `{$tab}` set ".join(',',$s)." where id=:id";
+   }     
+  return $sql;
+}

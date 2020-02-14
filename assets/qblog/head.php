@@ -1,4 +1,4 @@
-<?php if(!defined('wmblog'))exit;?><!DOCTYPE HTML>
+<?php if(!defined('WMBLOG'))exit;?><!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -6,7 +6,7 @@
 <title><?php echo $tit.'_'.$webtitle;?></title>
 <meta name="keywords" content="<?php echo $key;?>" />
 <meta name="description" content="<?php echo $des;?>" />
-<link href="assets/<?php echo $template;?>/style.css" rel="stylesheet" type="text/css" />
+<link href="assets/<?php echo TEMPLATE;?>/style.css?v=4.0" rel="stylesheet" type="text/css" />
 <?php if($tpl=='post.php'){?>
 <link href="assets/js/wangeditor/css/wangEditor.min.css" rel="stylesheet" type="text/css" />
 <?php }?>
@@ -15,21 +15,23 @@
 <?php }?>
 </head>
 <body>
-<div id="wrap"> 
 <div id="header"> 
+<a id="menu_toggle" href="#"><i id="menu" class="iconfont menu"></i></a>  
+<div class="navbar-wrap">
   <div class="box-m">
     <div class="logo">
       <h2 id="title"><a href="./"><?php echo $webtitle;?></a></h2>   
-    </div>
-	<a id="menu_toggle" href="#"><i id="menu" class="iconfont menu"></i></a>
-    <div id="navigation">
-      <ul id="nav"> 
+    </div>	   
+      <ul id="nav" class="collapse"> 
 		<?php webmenu();?>
-      </ul>  
-    </div>
+      </ul>   
       </div>
+</div>
+<div class="other-wrap collapse">
 	  <div class="other box-m">
 	   <div class="desc"><?php echo $motto;?></div>
 	   <form method="get" class="search-form" action="<?php echo $file;?>"> <input class="search-text" name="s" autocomplete="off" placeholder="输入关键词搜索..." required="required" type="text" value="<?php echo $s;?>"> <button class="search-submit" alt="搜索" type="submit">搜索</button></form>
 	   </div>   
 </div>
+</div>
+<div id="wrap"> 
