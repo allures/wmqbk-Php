@@ -25,7 +25,7 @@ case 'addpl':
 	      logmsg(0,'验证码错误！');
 	   }
 	 }
-     $v = $db->getdata("select id from `Log` where id=:id",array('id'=>$id));
+     $v = $db->getdata("select * from `Log` where id=:id",array('id'=>$id));
 	 if(empty($v[0]) || $v[0]['lock']==1 || $v[0]['hide']==1){
 	   logmsg(0,'评论失败！');
 	 } 
