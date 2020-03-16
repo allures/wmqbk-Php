@@ -63,6 +63,7 @@ function pl_str($id,$arr){
 
  function timeago($ptime) {
         $ptime = strtotime($ptime);
+		return date('Y-m-d', $ptime);
         $etime = time() - $ptime;
         if($etime < 1) return '刚刚';
         $interval = array (

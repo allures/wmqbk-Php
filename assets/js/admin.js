@@ -106,13 +106,15 @@ function savelog() {
     $("#log").focus();
     return false;
   }
+  $("#addpost").attr("disabled",true);
 	$.post("./app/class/ajax.php?act=savelog", $.param(data), function(data) {
-		errmsg(data.message);
+		errmsg(data.message);		 
 		if (data.result == '200') {		
 		  window.location.href = 'index.php?act=pl&id='+data.id;
 		}
-	}, 'json');
+        $("#addpost").removeAttr("disabled");
 
+	}, 'json');
 }
 
 function dellog(id,v){

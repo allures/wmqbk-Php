@@ -127,12 +127,12 @@ break;
 
 case 'delwid':
 	chkadm(); 
-	if($id>4){
+	//if($id>4){
       $b =  $db->runsql("delete from `Wid` where id=:id",array('id'=>$id));
       logmsg(1);
-	}else{
-	  logmsg(0,'系统侧栏不能删除！');
-	}
+	//}else{
+	  //logmsg(0,'系统侧栏不能删除！');
+	//}
 break;
 
 case 'delpic':
