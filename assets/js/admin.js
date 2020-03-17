@@ -91,7 +91,7 @@ function eplug(id){
  function upCache(){
    $.get("./app/class/ajax.php?act=upcache",function(data){mymsg(data.message);},'json');
 }
-
+ 
 function savelog() {
    var data = $("#post").serializeArray();
    var pic = upic,
@@ -106,14 +106,20 @@ function savelog() {
     $("#log").focus();
     return false;
   }
-  $("#addpost").attr("disabled",true);
-	$.post("./app/class/ajax.php?act=savelog", $.param(data), function(data) {
-		errmsg(data.message);		 
+  layer.open({
+    type: 2,
+    shadeClose: false,
+    content: '保存中...'
+  });
+  //$("#addpost").attr("disabled",true);
+  $.post("./app/class/ajax.php?act=savelog", $.param(data), function(data) {
+				 
 		if (data.result == '200') {		
 		  window.location.href = 'index.php?act=pl&id='+data.id;
-		}
-        $("#addpost").removeAttr("disabled");
-
+		}else{
+		  errmsg(data.message);
+		  layer.closeAll();
+		}        
 	}, 'json');
 }
 
