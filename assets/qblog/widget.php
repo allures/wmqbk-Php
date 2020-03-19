@@ -3,7 +3,7 @@
   <div id="content">
     <div id="main"<?php if($widget=="0") echo ' class="w100"';?> style="background:#fff;padding:15px;box-sizing:border-box;">	 
    <ul class="tabtitle">
-	  <?php foreach($wid as $v){?><li><?php echo $v['title']; ?></li> <?php } ?>
+	  <?php foreach($wid as $v){?><li><?php echo empty(trim($v['title']))?'无标题':$v['title']; ?></li> <?php } ?>
 	<li>添加边栏</li>
    </ul> 
 	<?php foreach($wid as $v){?>
