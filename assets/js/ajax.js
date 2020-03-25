@@ -11,10 +11,26 @@ $.fn._serialize = function () {
 
 function ckradd(e,f){
   var val=$("#"+e+"pcontent").val();
+  var url=$("#"+e+"purl").val();
+  var mail=$("#"+e+"pmail").val();
+  var url_reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+  var mail_reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
   if(val.length<5 || val.length>200){
 	errmsg("评论内容必须在5-200字之间！");
    $("#"+e+"pcontent").focus();
    return false;  	  
+  }   
+    if(mail.length>0){
+     if(!mail_reg.test(mail)){
+     errmsg("请正确输入邮箱！");
+	 return false; 
+	 }
+  }
+  if(url.length>0){
+     if(!url_reg.test(url)){
+	 errmsg("请正确输入网址！");
+	 return false; 
+	 }
   }
   var code=$("#pcode").val();
   if (f=='1'&&code==''){	
