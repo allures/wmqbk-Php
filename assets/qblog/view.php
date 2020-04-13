@@ -7,7 +7,7 @@
 <div class="text"><?php  if($v['pass']==""){echo $v['content']; }else { echo '<p style="color:red;">这是一篇密码日志！</p><p><input placeholder="请输入密码..." name="pass" type="password" value="" id="password" class="search-text" /> <button class="search-submit" onclick="ckpass(\''.$v['id'].'\');" />确认</button></p>';}?></div>
 <p class="time clb"><?php  echo $class[$v['tid']].' '.$v['atime']?> 通过 <?php echo $v['fm'];?> <i class="iconfont icon-view"></i> 浏览(<?php echo $v['pv']; ?>) </p>
 <p class="navPost">  
-	<?php  view_admin($v['id'],$v['ist']);?>
+	<?php  view_admin($v['id'],$v['ist'],$v['lock']|$v['hide']);?>
 </p></div>  
 <div id="articlenav"><?php echo getprenext($v['id'],'pre');echo getprenext($v['id'],'next');?></div>
    <div id="comments">
@@ -26,7 +26,8 @@
 		</li>
        <?php $l++;} ?>
        </ol>
-<div id="respond" class="comment-respond"<?php if($v['lock']==1 || $v['hide']==1) echo ' style="display:none"'?>>
+	   <?php if($v['lock']==0 && $v['hide']==0){?>
+<div id="respond" class="comment-respond">
 		<h3 id="reply-title" class="comment-reply-title">发表评论</h3>
  <form id="formpl">
 <div class="s_e mt10"><textarea tabindex="1" placeholder="发言要文明，评论有水平..." name="pcontent" rows="3" id="pcontent" class="input_textarea"></textarea></div>
@@ -38,7 +39,8 @@
 	 <div class="s_e"><input type="text" tabindex="4" id="pcode" placeholder="右侧计算答案" name="pcode" autocomplete="off"  class="input_narrow" value="" /> <img src="app/class/codes.php" id="codeimg" style="cursor:pointer" alt="更换一道题！" onclick="reloadcode()"/></div>
 	 <?php }?>
 	 <div class="s_e"><button type="button" onClick="addpl('<?php echo $id;?>','<?php echo $safecode;?>')" id="add" class="btn"> 提 交 </button> <button type="button" onClick="history.back();" id="bck" class="btn"> 返 回 </button><span id="errmsg"></span></div>
-     </form></div>	
+     </form></div>
+    <?php } ?>
     </div>	
     </div>
     <?php include ("right.php");?>

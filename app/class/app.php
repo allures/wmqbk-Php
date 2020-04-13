@@ -94,11 +94,16 @@ function _class(){
 	return $str;
 }
 
-function view_admin($id,$ist,$v=1){
+function view_admin($id,$ist,$v=0){
 global $admin,$file;
 $txt = $ist==1?'取消':'置顶';
 $str = "<a id=\"zd-{$id}\" href=\"javascript:void(0)\" onclick=\"zdlog('{$id}')\">{$txt}</a>&nbsp;<a href=\"{$file}?act=edit&id={$id}\" title=\"编辑微博\">编辑</a>&nbsp;<a href=\"javascript:void(0)\" onclick=\"dellog('{$id}','1')\">删除</a>"; 
-$def = $v == 1?"<a href=\"JavaScript:history.back();\">返回</a>&nbsp; <a href=\"JavaScript:DotRoll('#formpl')\">我要评论</a>":"";
+$def = "";
+if($v==0){
+  $def = "<a href=\"JavaScript:history.back();\">返回</a>&nbsp; <a href=\"JavaScript:DotRoll('#formpl')\">我要评论</a>";
+}else if($v==1){
+   $def = "<a href=\"JavaScript:history.back();\">返回</a>";
+}
 echo $admin==1?$str:$def;
 }
 

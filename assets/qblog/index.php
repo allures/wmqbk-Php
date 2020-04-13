@@ -18,7 +18,7 @@
 	  </p>
       <p class="navPost"><i class="iconfont icon-view"></i> 浏览(<?php echo $v['pv']; ?>) <a href="<?php echo vurl($v['id']);?>"><i class="iconfont icon-com"></i> 评论(<?php echo  $v['num']; ?>)</a> 
 	 
-	<?php  view_admin($v['id'],$v['ist'],0);?>
+	<?php  view_admin($v['id'],$v['ist'],2);?>
 </p></div></div> 
 <?php }} ?>
 	<div class="pagination">
