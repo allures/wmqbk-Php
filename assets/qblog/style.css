@@ -165,6 +165,11 @@ input[type^="radio"]{border: 0;background: 0;width: auto}
 /*视频自适应代码*/
 .wm-video {position:relative;padding-bottom:56.25% !important;height:0;overflow:hidden;}
 .wm-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;}
+#archives ul{padding:10px 0 10px 20px}
+#archives ul li{padding:5px 0}
+#archives h2{border-bottom:1px solid #eee;padding-bottom:6px}
+#archives ul li:before{display:inline-block;content:"";background-color:#ddd;height:7px;width:7px;border-radius:100%;margin-right:10px;margin-bottom:2px}
+#archives ul li:hover:before{background-color:#2d6dcc}
 @media screen and (max-width:980px) {
 #content{width: 96%}
 #header,.box-m{width:100%}

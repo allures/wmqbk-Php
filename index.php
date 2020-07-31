@@ -30,6 +30,11 @@ switch ($act) {
 		login($file,$ps);
         break;
 
+    case 'archives':
+        $archives = $db->getdata("select * from `Log` order by atime desc", array());
+	    $tpl = 'archive.php';
+		break;
+
     case 'wid':
 		chkadm();
 	    $tit = '边栏设置';

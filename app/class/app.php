@@ -2,7 +2,7 @@
 require_once 'config.php';
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 define('ADMIN',$admin);
-define('VER','4.0.1');
+define('VER','4.1.0');
 $set = getset();
 $webpass= $set['webpass'];
 $webtitle= $set['webtitle'];
@@ -172,8 +172,8 @@ function vcls($tid){
 
 function vmenu($menu){
 	global $rewrite;
-	$menu = str_replace('@class',_class(),$menu);
-	return $rewrite?str_replace(array('@index','@comment'),array('index.html','comment.html'),$menu):str_replace(array('@index','@comment'),array(self(),self().'?act=plist'),$menu);
+	$menu = str_replace('@class',_class(),$menu);	
+	return $rewrite?str_replace(array('@index','@comment','@archives'),array('index.html','comment.html','archives.html'),$menu):str_replace(array('@index','@comment','@archives'),array(self(),self().'?act=plist',self().'?act=archives'),$menu);
 }
 
 function target($v,$file){  
