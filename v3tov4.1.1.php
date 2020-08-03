@@ -169,6 +169,7 @@ $sql3 = 'CREATE TABLE [Set] (
     webtitle VARCHAR (20),
     webkey   VARCHAR (100),
     webpass  VARCHAR (32),
+	lstr  VARCHAR (20),
     webdesc  VARCHAR (255),
     webmenu  TEXT,
     webclass VARCHAR (100),
@@ -190,6 +191,7 @@ $sql4 = 'INSERT INTO [Set] (
                       webtitle,
                       webkey,
                       webpass,
+                      lstr,
                       webdesc,
                       webmenu,
                       webclass,
@@ -209,6 +211,7 @@ $sql4 = 'INSERT INTO [Set] (
                          webtitle,
                          webkey,
                          webpass,
+						 "" as lstr,
                          webdesc,
                          webmenu,
                          webclass,
@@ -221,11 +224,11 @@ $sql4 = 'INSERT INTO [Set] (
                          "<script>//统计代码</script>" as foot,
                          widget,
                          motto,
-                         "4.0" as ver
+                         "4.1.1" as ver
                     FROM sqlitestudio_temp_table';
 $db->runsql($sql4);
 $sql5 = 'DROP TABLE sqlitestudio_temp_table';
-$db->runsql($sql5);
+$db->runsql($sql5); 
  
 $sql3 = 'CREATE TABLE Plug (
     id    INTEGER       PRIMARY KEY AUTOINCREMENT,
@@ -284,6 +287,6 @@ $_SESSION[$key.'set'] = '';
 //$db->runsql("update `Set` set webmenu='$m'");
 echo '升级完成！ 管理密码重置为：'.$p;
 echo '<p><a class="abt" href="index.php?ok">开始使用</a></p>';
-@unlink ('uptov4.php'); endfoot();
+@unlink ('v3tov4.1.1.php'); endfoot();
 ?>
  

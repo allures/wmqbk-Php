@@ -16,7 +16,12 @@ if($widget=="1") $wid = $db->getdata("select * from `Wid` order by ord");
 switch ($act) {
     case 'login':
 		$tit = '登陆';
+	    $ls = isset($_GET['l']) ? $_GET['l'] : '';
+		if($ls===$set['lstr']){
         $tpl = 'login.php';
+		}else{
+			header('Location:' . $file);
+		}
         break;
 
     case 'logout':
@@ -26,11 +31,13 @@ switch ($act) {
         break;
 
     case 'dologin':
-        $ps = isset($_POST['pass']) ? $_POST['pass'] : ''; 
-		login($file,$ps);
+        $ps = isset($_POST['pass']) ? $_POST['pass'] : '';
+	    $ls = isset($_POST['l']) ? $_POST['l'] : '';
+		login($file,$ps,$ls);
         break;
 
     case 'archives':
+		$tit = '归档';
         $archives = $db->getdata("select * from `Log` order by atime desc", array());
 	    $tpl = 'archive.php';
 		break;
@@ -101,6 +108,7 @@ switch ($act) {
         $pagelist = $pageStr->create_links(); //创建新页码
 		$tit = '评论列表';
 		$key = $webkey.',评论,博客评论,评论列表';
+		if($p>1)  $tit .= '_第'.$p.'页_';
         $tpl = 'plist.php';
         break;
     case 'target':
@@ -149,6 +157,7 @@ switch ($act) {
         $page_config['cur_page'] = $p; //传递当前页码
         $pageStr = new Page($page_config);
         $pagelist = $pageStr->create_links(); //创建新页码
+		if($p>1)  $tit .= '_第'.$p.'页_';
         $tpl = 'index.php';
 }
 include 'assets/'. TEMPLATE .'/'. $tpl;

@@ -2,7 +2,7 @@
 require_once 'config.php';
 $admin = isset($_SESSION[KEY.'admin'])?$_SESSION[KEY.'admin']:0;
 define('ADMIN',$admin);
-define('VER','4.1.0');
+define('VER','4.1.1');
 $set = getset();
 $webpass= $set['webpass'];
 $webtitle= $set['webtitle'];
@@ -16,15 +16,19 @@ $class = gcls($set['webclass']);
 $webmenu = vmenu($set['webmenu']);
 $motto = $set['motto'];
 require_once ROOT_PATH.'assets/'.TEMPLATE.'/theme.php';
-function login($file,$ps){
-	   global $webpass;
+function login($file,$ps,$ls){
+	   global $webpass,$set;
+	   if($ls === $set['lstr']){
        if (md5(md5(KEY.$ps)) === $webpass) {
             $_SESSION[KEY.'admin'] = 1;
 			$_SESSION[KEY.'group'] = 1;
             header('Location:' . $file);
         } else {
-            header('Location:' . $file . '?act=login');
+            header('Location:' . $file . '?act=login&l='.$ls);
         }
+	   }else{
+	       header('Location:' . $file );
+	   }
 }
 function mkDirs($path)
 {
@@ -70,10 +74,11 @@ function gcls($str){
 
 function webmenu(){
   $menu = array('add'=>'发布','set'=>'设置','wid'=>'边栏','logout'=>'退出');
-  global $webmenu,$admin,$file,$widget; 
+  global $webmenu,$admin,$file,$widget,$set; 
   echo $webmenu;
   if($admin === 0 ){
-      echo '<li><a href="'.$file.'?act=login">登录</a></li>';
+	  $q = $_SERVER['QUERY_STRING'];
+      if($q===$set['lstr']){echo '<li><a href="'.$file.'?act=login&l='.$q.'">登录</a></li>';}
   }else{
     foreach($menu as $k=>$v){
 	  if ($widget=="0" && $k=='wid') continue;

@@ -21,6 +21,10 @@
 		<input type="text" class="input_narrow" name="webpass" placeholder="不修改请留空" maxlength="15" />
 	</div>
 	<div class="s_e">
+		<strong>登录安全字符:</strong>
+		<input type="text" class="input_narrow" name="lstr" value="<?php echo $set['lstr'];?>" maxlength="20" />
+	</div>
+	<div class="s_e">
 		<strong>微博标题:</strong>
 		<input type="text" class="input_narrow" name="webtitle" value="<?php echo $set['webtitle'];?>" maxlength="30" />
 	</div> 
