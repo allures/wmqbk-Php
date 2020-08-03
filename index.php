@@ -17,7 +17,7 @@ switch ($act) {
     case 'login':
 		$tit = '登陆';
 	    $ls = isset($_GET['l']) ? $_GET['l'] : '';
-		if($ls===$set['lstr']){
+		if($ls==$set['lstr']){
         $tpl = 'login.php';
 		}else{
 			header('Location:' . $file);

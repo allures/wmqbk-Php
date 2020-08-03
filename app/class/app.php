@@ -18,7 +18,7 @@ $motto = $set['motto'];
 require_once ROOT_PATH.'assets/'.TEMPLATE.'/theme.php';
 function login($file,$ps,$ls){
 	   global $webpass,$set;
-	   if($ls === $set['lstr']){
+	   if($ls == $set['lstr']){
        if (md5(md5(KEY.$ps)) === $webpass) {
             $_SESSION[KEY.'admin'] = 1;
 			$_SESSION[KEY.'group'] = 1;
@@ -78,7 +78,7 @@ function webmenu(){
   echo $webmenu;
   if($admin === 0 ){
 	  $q = $_SERVER['QUERY_STRING'];
-      if($q===$set['lstr']){echo '<li><a href="'.$file.'?act=login&l='.$q.'">登录</a></li>';}
+      if($q==$set['lstr']){echo '<li><a href="'.$file.'?act=login&l='.$q.'">登录</a></li>';}
   }else{
     foreach($menu as $k=>$v){
 	  if ($widget=="0" && $k=='wid') continue;
