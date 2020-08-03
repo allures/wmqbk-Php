@@ -78,7 +78,11 @@ function webmenu(){
   echo $webmenu;
   if($admin === 0 ){
 	  $q = $_SERVER['QUERY_STRING'];
-      if($q==$set['lstr']){echo '<li><a href="'.$file.'?act=login&l='.$q.'">登录</a></li>';}
+	  if(empty($set['lstr'])){
+         echo '<li><a href="'.$file.'?act=login&l='.$q.'">登录</a></li>';
+	  }else{
+	     if($q==$set['lstr']){@header('Location:' . $file.'?act=login&l='.$q);}
+	  }      
   }else{
     foreach($menu as $k=>$v){
 	  if ($widget=="0" && $k=='wid') continue;
