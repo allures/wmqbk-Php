@@ -38,7 +38,8 @@ switch ($act) {
 
     case 'archives':
 		$tit = '归档';
-        $archives = $db->getdata("select * from `Log` order by atime desc", array());
+	    $where =  $admin?'':'where hide=0';
+        $archives = $db->getdata("select * from `Log` {$where} order by atime desc", array());
 	    $tpl = 'archive.php';
 		break;
 
