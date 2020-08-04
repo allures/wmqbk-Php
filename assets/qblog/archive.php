@@ -1,7 +1,7 @@
 <?php if(!defined('WMBLOG'))exit; ?>
 <?php include "head.php";?> 
 <div id="content" style="position: relative;">
-<div id="main" style="background:#fff;padding:15px;box-sizing:border-box;width:100%;">
+<div id="main"<?php if($widget=="0") echo ' class="w100"';?> style="background:#fff;padding:15px;box-sizing:border-box;">
     <div class="archivepage">    
     <?php 
     $year=0; $mon=0; $i=0; $j=0;
@@ -30,6 +30,7 @@
         <div class="clearfix"></div>
     </div>
 </div>
+<?php include ("right.php");?>
 </div>
 </div>
 <?php include "foot.php";?>
