@@ -36,7 +36,7 @@ function endfoot(){
 }
 if(!isset($_GET['up'])){ 
 echo '<p>此文件升级v4.0-v4.1版数据库为v4.1.1版，请备份好网站数据并真阅读升级步骤！！！<br />';
-echo '升级步骤：1.上传V4.1.1程序(除数据库外)覆盖，运行本程序点击下方【开始升级】即可。<br /><br /><a class="abt" href="?up=1">开始升级</a></p>';
+echo '升级步骤：1.上传V4.1.1程序(除数据库、config.php外)覆盖，运行本程序点击下方【开始升级】即可。<br /><br /><a class="abt" href="?up=1">开始升级</a></p>';
    endfoot();
 }else{
 include 'app/class/app.php';
