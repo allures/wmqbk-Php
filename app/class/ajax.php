@@ -182,6 +182,7 @@ case 'savelog':
 	}	  
 	if($c=='add'){
 		$arr['fm'] = agent();
+		$arr['atime'] = date('Y-m-d H:i:s');
 		$sql = arr_sql('Log','insert',$arr);
 		$b =  $db->runsql($sql,$arr);
 	}else{
