@@ -1,4 +1,12 @@
 <?php
+//url获取
+$uri = $_SERVER['REQUEST_URI'];
+$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ?
+
+    "https://": "http://";
+
+$url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+ //原脚本
 $t1 = microtime(true);
 require_once 'app/class/app.php';
 require_once 'app/class/page.php';
