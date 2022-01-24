@@ -26,10 +26,10 @@
 <meta itemprop="description" content="<?php echo $des;?>">
 <link href="assets/<?php echo TEMPLATE;?>/style.css?v=4.0" rel="stylesheet" type="text/css" />
 <?php if($tpl=='post.php'){?>
-<link href="assets/js/wangeditor/css/wangEditor.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/allures/wmqbk-Php@master/assets/js/wangeditor/css/wangEditor.min.css" rel="stylesheet" type="text/css" />
 <?php }?>
 <?php if($tpl=='view.php'){?>
-<link href="assets/js/highlightjs/dark.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/allures/wmqbk-Php@master/assets/js/highlightjs/dark.css" rel="stylesheet" type="text/css" />
 <?php }?>
 </head>
 <body>
