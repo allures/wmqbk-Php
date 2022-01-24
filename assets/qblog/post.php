@@ -35,9 +35,9 @@
   </div>
   </div>
 <?php include ("foot.php"); ?> 
-<script type="text/javascript" language="javascript" src="assets/js/wangeditor/wangEditor.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.jsdelivr.net/gh/allures/wmqbk-Php@master/assets/js/wangeditor/wangEditor.min.js"></script>
 <?php if($act ==='edit'){?>
-<script type="text/javascript" language="javascript" src="assets/js/laydate/laydate.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.jsdelivr.net/gh/allures/wmqbk-Php@master/assets/js/laydate/laydate.js"></script>
 <?php }?>
 </body>
 </html>
