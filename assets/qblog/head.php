@@ -4,14 +4,12 @@
 <html>
 <head>
 <meta charset="utf-8" />
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
 <meta name="applicable-device"content="pc,mobile">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <title><?php echo $tit.'_'.$webtitle;?></title>
 <meta name="keywords" content="<?php echo $key;?>" />
 <meta name="description" content="<?php echo $des;?>" />
-<!-- Browser settings -->
-<meta name="x5-orientation" content="portrait">
-<meta name="screen-orientation" content="portrait">
 <meta name="robots" content="index,follow" />
 <meta name="applicable-device"content="pc,mobile">
 <!-- og tag -->
